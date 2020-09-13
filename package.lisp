@@ -1,3 +1,7 @@
+(defpackage #:imgui
+  (:use #:cl)
+  (:nicknames "im"))
+
 (defpackage #:raw-gui
   (:use #:cl)
   (:nicknames "rg")
@@ -18,8 +22,9 @@
     #:title
     #:fn
 
-    ;; Helpers
-    #:sdl-event-data
+    ;; Methods
+    #:update-size
+    #:update-pos
 
     ;; Main
     #:open-window

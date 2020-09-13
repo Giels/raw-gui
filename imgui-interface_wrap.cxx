@@ -13,6 +13,12 @@
 #define SWIGCFFI
 #endif
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_internal.h"
+#include "SDL.h"
+#include "imgui/examples/imgui_impl_opengl3.h"
+#include "imgui/examples/imgui_impl_sdl.h"
+
 
 #ifdef __cplusplus
 /* SwigValueWrapper is described in swig.swg */
@@ -2466,7 +2472,8 @@ EXPORT void _wrap_Text (char *larg1) {
   }
 }
 
-
+/*
+ * BROKEN:
 EXPORT void _wrap_TextV (char *larg1, va_list *larg2) {
   char *arg1 = (char *) 0 ;
   va_list arg2 ;
@@ -2479,7 +2486,7 @@ EXPORT void _wrap_TextV (char *larg1, va_list *larg2) {
   } catch (...) {
     
   }
-}
+}*/
 
 
 EXPORT void _wrap_TextColored (ImVec4 *larg1, char *larg2) {
@@ -2498,6 +2505,7 @@ EXPORT void _wrap_TextColored (ImVec4 *larg1, char *larg2) {
 }
 
 
+/*
 EXPORT void _wrap_TextColoredV (ImVec4 *larg1, char *larg2, va_list *larg3) {
   ImVec4 *arg1 = 0 ;
   char *arg2 = (char *) 0 ;
@@ -2512,7 +2520,7 @@ EXPORT void _wrap_TextColoredV (ImVec4 *larg1, char *larg2, va_list *larg3) {
   } catch (...) {
     
   }
-}
+}*/
 
 
 EXPORT void _wrap_TextDisabled (char *larg1) {
@@ -2528,7 +2536,8 @@ EXPORT void _wrap_TextDisabled (char *larg1) {
   }
 }
 
-
+/*
+ * Also broken:
 EXPORT void _wrap_TextDisabledV (char *larg1, va_list *larg2) {
   char *arg1 = (char *) 0 ;
   va_list arg2 ;
@@ -2541,7 +2550,7 @@ EXPORT void _wrap_TextDisabledV (char *larg1, va_list *larg2) {
   } catch (...) {
     
   }
-}
+} */
 
 
 EXPORT void _wrap_TextWrapped (char *larg1) {
@@ -2558,6 +2567,7 @@ EXPORT void _wrap_TextWrapped (char *larg1) {
 }
 
 
+/* Broken
 EXPORT void _wrap_TextWrappedV (char *larg1, va_list *larg2) {
   char *arg1 = (char *) 0 ;
   va_list arg2 ;
@@ -2570,7 +2580,7 @@ EXPORT void _wrap_TextWrappedV (char *larg1, va_list *larg2) {
   } catch (...) {
     
   }
-}
+}*/
 
 
 EXPORT void _wrap_LabelText (char *larg1, char *larg2) {
@@ -2588,7 +2598,7 @@ EXPORT void _wrap_LabelText (char *larg1, char *larg2) {
   }
 }
 
-
+/* Borken
 EXPORT void _wrap_LabelTextV (char *larg1, char *larg2, va_list *larg3) {
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2603,7 +2613,7 @@ EXPORT void _wrap_LabelTextV (char *larg1, char *larg2, va_list *larg3) {
   } catch (...) {
     
   }
-}
+}*/
 
 
 EXPORT void _wrap_BulletText (char *larg1) {
@@ -2620,6 +2630,7 @@ EXPORT void _wrap_BulletText (char *larg1) {
 }
 
 
+/* Broken:
 EXPORT void _wrap_BulletTextV (char *larg1, va_list *larg2) {
   char *arg1 = (char *) 0 ;
   va_list arg2 ;
@@ -2632,7 +2643,7 @@ EXPORT void _wrap_BulletTextV (char *larg1, va_list *larg2) {
   } catch (...) {
     
   }
-}
+}*/
 
 
 EXPORT int _wrap_Button__SWIG_0 (char *larg1, ImVec2 *larg2) {
@@ -2651,7 +2662,6 @@ EXPORT int _wrap_Button__SWIG_0 (char *larg1, ImVec2 *larg2) {
     return (int)0;
   }
 }
-
 
 EXPORT int _wrap_Button__SWIG_1 (char *larg1) {
   int lresult = (int)0 ;
@@ -7578,6 +7588,7 @@ EXPORT int _wrap_TreeNode__SWIG_2 (void *larg1, char *larg2) {
 }
 
 
+/* Broken:
 EXPORT int _wrap_TreeNodeV__SWIG_0 (char *larg1, char *larg2, va_list *larg3) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
@@ -7615,7 +7626,7 @@ EXPORT int _wrap_TreeNodeV__SWIG_1 (void *larg1, char *larg2, va_list *larg3) {
   } catch (...) {
     return (int)0;
   }
-}
+}*/
 
 
 EXPORT int _wrap_TreeNodeEx__SWIG_0 (char *larg1, ImGuiTreeNodeFlags larg2) {
@@ -7693,7 +7704,7 @@ EXPORT int _wrap_TreeNodeEx__SWIG_3 (void *larg1, ImGuiTreeNodeFlags larg2, char
   }
 }
 
-
+/* Broken
 EXPORT int _wrap_TreeNodeExV__SWIG_0 (char *larg1, ImGuiTreeNodeFlags larg2, char *larg3, va_list *larg4) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
@@ -7735,7 +7746,7 @@ EXPORT int _wrap_TreeNodeExV__SWIG_1 (void *larg1, ImGuiTreeNodeFlags larg2, cha
   } catch (...) {
     return (int)0;
   }
-}
+}*/
 
 
 EXPORT void _wrap_TreePush__SWIG_0 (char *larg1) {
@@ -9143,6 +9154,7 @@ EXPORT void _wrap_SetTooltip (char *larg1) {
 }
 
 
+/* Broken:
 EXPORT void _wrap_SetTooltipV (char *larg1, va_list *larg2) {
   char *arg1 = (char *) 0 ;
   va_list arg2 ;
@@ -9155,7 +9167,7 @@ EXPORT void _wrap_SetTooltipV (char *larg1, va_list *larg2) {
   } catch (...) {
     
   }
-}
+}*/
 
 
 EXPORT int _wrap_BeginPopup__SWIG_0 (char *larg1, ImGuiWindowFlags larg2) {
@@ -12588,6 +12600,7 @@ EXPORT int _wrap_ImFormatString (char *larg1, size_t *larg2, char *larg3) {
 }
 
 
+/* Broken:
 EXPORT int _wrap_ImFormatStringV (char *larg1, size_t *larg2, char *larg3, va_list *larg4) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
@@ -12607,7 +12620,7 @@ EXPORT int _wrap_ImFormatStringV (char *larg1, size_t *larg2, char *larg3, va_li
   } catch (...) {
     return (int)0;
   }
-}
+}*/
 
 
 EXPORT char *_wrap_ImParseFormatFindStart (char *larg1) {

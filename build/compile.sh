@@ -1,0 +1,2 @@
+g++ -std=c++11 -DIMGUI_IMPL_OPENGL_LOADER_GLAD -fPIC -I../glad/include/ -I../imgui/ -I../SDL/include/ -c ../imgui-interface_wrap.cxx ../imgui/imgui.cpp ../imgui/imgui_draw.cpp ../imgui/imgui_widgets.cpp ../imgui/imgui_demo.cpp ../imgui/examples/imgui_impl_sdl.cpp ../imgui/examples/imgui_impl_opengl3.cpp ../glad/src/glad.c
+g++ -std=c++11 imgui_impl_sdl.o imgui_impl_opengl3.o imgui_demo.o imgui_draw.o imgui_widgets.o imgui-interface_wrap.o imgui.o glad.o -shared -o ../lib/libimgui.so  -lGL -pthread -Llib -lSDL2

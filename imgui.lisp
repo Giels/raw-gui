@@ -16,6 +16,17 @@
 ;; - Function named Shutdown has to be renamed because it is a predefined function in some(?) lisps (this should really be done in the interface instead of manually...)
 ;; Shaving off the functions defined in the structs from the generated bindings will only work so long as nothing virtual comes into play. Alignments and sizes change otherwise.
 
+;; Additional modifications:
+;; - Removed  prefixes from every function name
+;; - For all enums, the EnumName_ prefix was removed (e.g. :ImGuiWindowFlags_NoSavedSettings becomes :NoSavedSettings)
+
+;; XXX: SWIG generator registeres the same lisp function name for variants of the same function (e.g. template specialization or variants of the same function with differing arguments).
+;; XXX: This is obviously wrong for our use because it ends up shadowing all but the last definition registered.
+;; XXX: I will rename variants manually as I need them, obviously this isn't production-quality stuff.
+;; XXX: In total, there are just over 600 function variants to rename all in all, over a total of 191 unique function names.
+
+(in-package :imgui)
+
 
 ;;;SWIG wrapper code starts here
 
@@ -69,23 +80,23 @@
 
 (cl:defconstant IMGUI_VERSION_NUM 17800)
 
-(cffi:defctype ImGuiCol :int)
+(cffi:defctype Col :int)
 
-(cffi:defctype ImGuiCond :int)
+(cffi:defctype Cond :int)
 
-(cffi:defctype ImGuiDataType :int)
+(cffi:defctype DataType :int)
 
-(cffi:defctype ImGuiDir :int)
+(cffi:defctype Dir :int)
 
-(cffi:defctype ImGuiKey :int)
+(cffi:defctype Key :int)
 
-(cffi:defctype ImGuiNavInput :int)
+(cffi:defctype NavInput :int)
 
-(cffi:defctype ImGuiMouseButton :int)
+(cffi:defctype MouseButton :int)
 
-(cffi:defctype ImGuiMouseCursor :int)
+(cffi:defctype MouseCursor :int)
 
-(cffi:defctype ImGuiStyleVar :int)
+(cffi:defctype StyleVar :int)
 
 (cffi:defctype ImDrawCornerFlags :int)
 
@@ -93,47 +104,47 @@
 
 (cffi:defctype ImFontAtlasFlags :int)
 
-(cffi:defctype ImGuiBackendFlags :int)
+(cffi:defctype BackendFlags :int)
 
-(cffi:defctype ImGuiButtonFlags :int)
+(cffi:defctype ButtonFlags :int)
 
-(cffi:defctype ImGuiColorEditFlags :int)
+(cffi:defctype ColorEditFlags :int)
 
-(cffi:defctype ImGuiConfigFlags :int)
+(cffi:defctype ConfigFlags :int)
 
-(cffi:defctype ImGuiComboFlags :int)
+(cffi:defctype ComboFlags :int)
 
-(cffi:defctype ImGuiDragDropFlags :int)
+(cffi:defctype DragDropFlags :int)
 
-(cffi:defctype ImGuiFocusedFlags :int)
+(cffi:defctype FocusedFlags :int)
 
-(cffi:defctype ImGuiHoveredFlags :int)
+(cffi:defctype HoveredFlags :int)
 
-(cffi:defctype ImGuiInputTextFlags :int)
+(cffi:defctype InputTextFlags :int)
 
-(cffi:defctype ImGuiKeyModFlags :int)
+(cffi:defctype KeyModFlags :int)
 
-(cffi:defctype ImGuiPopupFlags :int)
+(cffi:defctype PopupFlags :int)
 
-(cffi:defctype ImGuiSelectableFlags :int)
+(cffi:defctype SelectableFlags :int)
 
-(cffi:defctype ImGuiSliderFlags :int)
+(cffi:defctype SliderFlags :int)
 
-(cffi:defctype ImGuiTabBarFlags :int)
+(cffi:defctype TabBarFlags :int)
 
-(cffi:defctype ImGuiTabItemFlags :int)
+(cffi:defctype TabItemFlags :int)
 
-(cffi:defctype ImGuiTreeNodeFlags :int)
+(cffi:defctype TreeNodeFlags :int)
 
-(cffi:defctype ImGuiWindowFlags :int)
+(cffi:defctype WindowFlags :int)
 
 (cffi:defctype ImTextureID :pointer)
 
-(cffi:defctype ImGuiID :unsigned-int)
+(cffi:defctype ID :unsigned-int)
 
-(cffi:defctype ImGuiInputTextCallback :pointer)
+(cffi:defctype InputTextCallback :pointer)
 
-(cffi:defctype ImGuiSizeCallback :pointer)
+(cffi:defctype SizeCallback :pointer)
 
 (cffi:defctype ImWchar16 :unsigned-short)
 
@@ -169,8 +180,8 @@
 	(z :float)
 	(w :float))
 
-(cffi:defcfun ("_wrap_CreateContext__SWIG_0" CreateContext) :pointer
-  (shared_font_atlas :pointer))
+;(cffi:defcfun ("_wrap_CreateContext__SWIG_0" CreateContext) :pointer
+;  (shared_font_atlas :pointer))
 
 (cffi:defcfun ("_wrap_CreateContext__SWIG_1" CreateContext) :pointer)
 
@@ -241,12 +252,12 @@
 
 (cffi:defcfun ("_wrap_StyleColorsLight__SWIG_1" StyleColorsLight) :void)
 
-(cffi:defcfun ("_wrap_Begin__SWIG_0" Begin) :pointer
+(cffi:defcfun ("_wrap_Begin__SWIG_0" Begin3) :pointer
   (name :string)
   (p_open :pointer)
   (flags :int))
 
-(cffi:defcfun ("_wrap_Begin__SWIG_1" Begin) :pointer
+(cffi:defcfun ("_wrap_Begin__SWIG_1" Begin2) :pointer
   (name :string)
   (p_open :pointer))
 
@@ -650,59 +661,59 @@
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_TextV" TextV) :void
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TextV" TextV) :void
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_TextColored" TextColored) :void
   (col :pointer)
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_TextColoredV" TextColoredV) :void
-  (col :pointer)
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TextColoredV" TextColoredV) :void
+;;  (col :pointer)
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_TextDisabled" TextDisabled) :void
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_TextDisabledV" TextDisabledV) :void
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TextDisabledV" TextDisabledV) :void
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_TextWrapped" TextWrapped) :void
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_TextWrappedV" TextWrappedV) :void
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TextWrappedV" TextWrappedV) :void
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_LabelText" LabelText) :void
   (label :string)
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_LabelTextV" LabelTextV) :void
-  (label :string)
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_LabelTextV" LabelTextV) :void
+;;  (label :string)
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_BulletText" BulletText) :void
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_BulletTextV" BulletTextV) :void
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_BulletTextV" BulletTextV) :void
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_Button__SWIG_0" Button) :pointer
   (label :string)
   (size :pointer))
 
-(cffi:defcfun ("_wrap_Button__SWIG_1" Button) :pointer
+(cffi:defcfun ("_wrap_Button__SWIG_1" Button) :bool
   (label :string))
 
 (cffi:defcfun ("_wrap_SmallButton" SmallButton) :pointer
@@ -1396,7 +1407,7 @@
   (v_max :float)
   (format :string))
 
-(cffi:defcfun ("_wrap_SliderFloat__SWIG_2" SliderFloat) :pointer
+(cffi:defcfun ("_wrap_SliderFloat__SWIG_2" SliderFloatMinMax) :pointer
   (label :string)
   (v :pointer)
   (v_min :float)
@@ -2098,15 +2109,15 @@
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_TreeNodeV__SWIG_0" TreeNodeV) :pointer
-  (str_id :string)
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TreeNodeV__SWIG_0" TreeNodeV) :pointer
+;;  (str_id :string)
+;;  (fmt :string)
+;;  (args :pointer))
 
-(cffi:defcfun ("_wrap_TreeNodeV__SWIG_1" TreeNodeV) :pointer
-  (ptr_id :pointer)
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TreeNodeV__SWIG_1" TreeNodeV) :pointer
+;;  (ptr_id :pointer)
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_TreeNodeEx__SWIG_0" TreeNodeEx) :pointer
   (label :string)
@@ -2127,17 +2138,17 @@
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_TreeNodeExV__SWIG_0" TreeNodeExV) :pointer
-  (str_id :string)
-  (flags :int)
-  (fmt :string)
-  (args :pointer))
-
-(cffi:defcfun ("_wrap_TreeNodeExV__SWIG_1" TreeNodeExV) :pointer
-  (ptr_id :pointer)
-  (flags :int)
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_TreeNodeExV__SWIG_0" TreeNodeExV) :pointer
+;;  (str_id :string)
+;;  (flags :int)
+;;  (fmt :string)
+;;  (args :pointer))
+;;
+;;(cffi:defcfun ("_wrap_TreeNodeExV__SWIG_1" TreeNodeExV) :pointer
+;;  (ptr_id :pointer)
+;;  (flags :int)
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_TreePush__SWIG_0" TreePush) :void
   (str_id :string))
@@ -2542,9 +2553,9 @@
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_SetTooltipV" SetTooltipV) :void
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_SetTooltipV" SetTooltipV) :void
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_BeginPopup__SWIG_0" BeginPopup) :pointer
   (str_id :string)
@@ -3017,424 +3028,424 @@
 (cffi:defcfun ("_wrap_MemFree" MemFree) :void
   (ptr :pointer))
 
-(cffi:defcenum ImGuiWindowFlags_
-	(:ImGuiWindowFlags_None #.0)
-	(:ImGuiWindowFlags_NoTitleBar #.(cl:ash 1 0))
-	(:ImGuiWindowFlags_NoResize #.(cl:ash 1 1))
-	(:ImGuiWindowFlags_NoMove #.(cl:ash 1 2))
-	(:ImGuiWindowFlags_NoScrollbar #.(cl:ash 1 3))
-	(:ImGuiWindowFlags_NoScrollWithMouse #.(cl:ash 1 4))
-	(:ImGuiWindowFlags_NoCollapse #.(cl:ash 1 5))
-	(:ImGuiWindowFlags_AlwaysAutoResize #.(cl:ash 1 6))
-	(:ImGuiWindowFlags_NoBackground #.(cl:ash 1 7))
-	(:ImGuiWindowFlags_NoSavedSettings #.(cl:ash 1 8))
-	(:ImGuiWindowFlags_NoMouseInputs #.(cl:ash 1 9))
-	(:ImGuiWindowFlags_MenuBar #.(cl:ash 1 10))
-	(:ImGuiWindowFlags_HorizontalScrollbar #.(cl:ash 1 11))
-	(:ImGuiWindowFlags_NoFocusOnAppearing #.(cl:ash 1 12))
-	(:ImGuiWindowFlags_NoBringToFrontOnFocus #.(cl:ash 1 13))
-	(:ImGuiWindowFlags_AlwaysVerticalScrollbar #.(cl:ash 1 14))
-	(:ImGuiWindowFlags_AlwaysHorizontalScrollbar #.(cl:ash 1 15))
-	(:ImGuiWindowFlags_AlwaysUseWindowPadding #.(cl:ash 1 16))
-	(:ImGuiWindowFlags_NoNavInputs #.(cl:ash 1 18))
-	(:ImGuiWindowFlags_NoNavFocus #.(cl:ash 1 19))
-	(:ImGuiWindowFlags_UnsavedDocument #.(cl:ash 1 20))
-	(:ImGuiWindowFlags_NoNav #.(cl:logior (cl:ash 1 18) (cl:ash 1 19)))
-	(:ImGuiWindowFlags_NoDecoration #.(cl:logior (cl:ash 1 0) (cl:ash 1 1) (cl:ash 1 3) (cl:ash 1 5)))
-	(:ImGuiWindowFlags_NoInputs #.(cl:logior (cl:ash 1 9) (cl:ash 1 18) (cl:ash 1 19)))
-	(:ImGuiWindowFlags_NavFlattened #.(cl:ash 1 23))
-	(:ImGuiWindowFlags_ChildWindow #.(cl:ash 1 24))
-	(:ImGuiWindowFlags_Tooltip #.(cl:ash 1 25))
-	(:ImGuiWindowFlags_Popup #.(cl:ash 1 26))
-	(:ImGuiWindowFlags_Modal #.(cl:ash 1 27))
-	(:ImGuiWindowFlags_ChildMenu #.(cl:ash 1 28)))
+(cffi:defcenum WindowFlags_
+	(:None #.0)
+	(:NoTitleBar #.(cl:ash 1 0))
+	(:NoResize #.(cl:ash 1 1))
+	(:NoMove #.(cl:ash 1 2))
+	(:NoScrollbar #.(cl:ash 1 3))
+	(:NoScrollWithMouse #.(cl:ash 1 4))
+	(:NoCollapse #.(cl:ash 1 5))
+	(:AlwaysAutoResize #.(cl:ash 1 6))
+	(:NoBackground #.(cl:ash 1 7))
+	(:NoSavedSettings #.(cl:ash 1 8))
+	(:NoMouseInputs #.(cl:ash 1 9))
+	(:MenuBar #.(cl:ash 1 10))
+	(:HorizontalScrollbar #.(cl:ash 1 11))
+	(:NoFocusOnAppearing #.(cl:ash 1 12))
+	(:NoBringToFrontOnFocus #.(cl:ash 1 13))
+	(:AlwaysVerticalScrollbar #.(cl:ash 1 14))
+	(:AlwaysHorizontalScrollbar #.(cl:ash 1 15))
+	(:AlwaysUseWindowPadding #.(cl:ash 1 16))
+	(:NoNavInputs #.(cl:ash 1 18))
+	(:NoNavFocus #.(cl:ash 1 19))
+	(:UnsavedDocument #.(cl:ash 1 20))
+	(:NoNav #.(cl:logior (cl:ash 1 18) (cl:ash 1 19)))
+	(:NoDecoration #.(cl:logior (cl:ash 1 0) (cl:ash 1 1) (cl:ash 1 3) (cl:ash 1 5)))
+	(:NoInputs #.(cl:logior (cl:ash 1 9) (cl:ash 1 18) (cl:ash 1 19)))
+	(:NavFlattened #.(cl:ash 1 23))
+	(:ChildWindow #.(cl:ash 1 24))
+	(:Tooltip #.(cl:ash 1 25))
+	(:Popup #.(cl:ash 1 26))
+	(:Modal #.(cl:ash 1 27))
+	(:ChildMenu #.(cl:ash 1 28)))
 
-(cffi:defcenum ImGuiInputTextFlags_
-	(:ImGuiInputTextFlags_None #.0)
-	(:ImGuiInputTextFlags_CharsDecimal #.(cl:ash 1 0))
-	(:ImGuiInputTextFlags_CharsHexadecimal #.(cl:ash 1 1))
-	(:ImGuiInputTextFlags_CharsUppercase #.(cl:ash 1 2))
-	(:ImGuiInputTextFlags_CharsNoBlank #.(cl:ash 1 3))
-	(:ImGuiInputTextFlags_AutoSelectAll #.(cl:ash 1 4))
-	(:ImGuiInputTextFlags_EnterReturnsTrue #.(cl:ash 1 5))
-	(:ImGuiInputTextFlags_CallbackCompletion #.(cl:ash 1 6))
-	(:ImGuiInputTextFlags_CallbackHistory #.(cl:ash 1 7))
-	(:ImGuiInputTextFlags_CallbackAlways #.(cl:ash 1 8))
-	(:ImGuiInputTextFlags_CallbackCharFilter #.(cl:ash 1 9))
-	(:ImGuiInputTextFlags_AllowTabInput #.(cl:ash 1 10))
-	(:ImGuiInputTextFlags_CtrlEnterForNewLine #.(cl:ash 1 11))
-	(:ImGuiInputTextFlags_NoHorizontalScroll #.(cl:ash 1 12))
-	(:ImGuiInputTextFlags_AlwaysInsertMode #.(cl:ash 1 13))
-	(:ImGuiInputTextFlags_ReadOnly #.(cl:ash 1 14))
-	(:ImGuiInputTextFlags_Password #.(cl:ash 1 15))
-	(:ImGuiInputTextFlags_NoUndoRedo #.(cl:ash 1 16))
-	(:ImGuiInputTextFlags_CharsScientific #.(cl:ash 1 17))
-	(:ImGuiInputTextFlags_CallbackResize #.(cl:ash 1 18))
-	(:ImGuiInputTextFlags_Multiline #.(cl:ash 1 20))
-	(:ImGuiInputTextFlags_NoMarkEdited #.(cl:ash 1 21)))
+(cffi:defcenum InputTextFlags_
+	(:None #.0)
+	(:CharsDecimal #.(cl:ash 1 0))
+	(:CharsHexadecimal #.(cl:ash 1 1))
+	(:CharsUppercase #.(cl:ash 1 2))
+	(:CharsNoBlank #.(cl:ash 1 3))
+	(:AutoSelectAll #.(cl:ash 1 4))
+	(:EnterReturnsTrue #.(cl:ash 1 5))
+	(:CallbackCompletion #.(cl:ash 1 6))
+	(:CallbackHistory #.(cl:ash 1 7))
+	(:CallbackAlways #.(cl:ash 1 8))
+	(:CallbackCharFilter #.(cl:ash 1 9))
+	(:AllowTabInput #.(cl:ash 1 10))
+	(:CtrlEnterForNewLine #.(cl:ash 1 11))
+	(:NoHorizontalScroll #.(cl:ash 1 12))
+	(:AlwaysInsertMode #.(cl:ash 1 13))
+	(:ReadOnly #.(cl:ash 1 14))
+	(:Password #.(cl:ash 1 15))
+	(:NoUndoRedo #.(cl:ash 1 16))
+	(:CharsScientific #.(cl:ash 1 17))
+	(:CallbackResize #.(cl:ash 1 18))
+	(:Multiline #.(cl:ash 1 20))
+	(:NoMarkEdited #.(cl:ash 1 21)))
 
-(cffi:defcenum ImGuiTreeNodeFlags_
-	(:ImGuiTreeNodeFlags_None #.0)
-	(:ImGuiTreeNodeFlags_Selected #.(cl:ash 1 0))
-	(:ImGuiTreeNodeFlags_Framed #.(cl:ash 1 1))
-	(:ImGuiTreeNodeFlags_AllowItemOverlap #.(cl:ash 1 2))
-	(:ImGuiTreeNodeFlags_NoTreePushOnOpen #.(cl:ash 1 3))
-	(:ImGuiTreeNodeFlags_NoAutoOpenOnLog #.(cl:ash 1 4))
-	(:ImGuiTreeNodeFlags_DefaultOpen #.(cl:ash 1 5))
-	(:ImGuiTreeNodeFlags_OpenOnDoubleClick #.(cl:ash 1 6))
-	(:ImGuiTreeNodeFlags_OpenOnArrow #.(cl:ash 1 7))
-	(:ImGuiTreeNodeFlags_Leaf #.(cl:ash 1 8))
-	(:ImGuiTreeNodeFlags_Bullet #.(cl:ash 1 9))
-	(:ImGuiTreeNodeFlags_FramePadding #.(cl:ash 1 10))
-	(:ImGuiTreeNodeFlags_SpanAvailWidth #.(cl:ash 1 11))
-	(:ImGuiTreeNodeFlags_SpanFullWidth #.(cl:ash 1 12))
-	(:ImGuiTreeNodeFlags_NavLeftJumpsBackHere #.(cl:ash 1 13))
-	(:ImGuiTreeNodeFlags_CollapsingHeader #.(cl:logior (cl:ash 1 1) (cl:ash 1 3) (cl:ash 1 4))))
+(cffi:defcenum TreeNodeFlags_
+	(:None #.0)
+	(:Selected #.(cl:ash 1 0))
+	(:Framed #.(cl:ash 1 1))
+	(:AllowItemOverlap #.(cl:ash 1 2))
+	(:NoTreePushOnOpen #.(cl:ash 1 3))
+	(:NoAutoOpenOnLog #.(cl:ash 1 4))
+	(:DefaultOpen #.(cl:ash 1 5))
+	(:OpenOnDoubleClick #.(cl:ash 1 6))
+	(:OpenOnArrow #.(cl:ash 1 7))
+	(:Leaf #.(cl:ash 1 8))
+	(:Bullet #.(cl:ash 1 9))
+	(:FramePadding #.(cl:ash 1 10))
+	(:SpanAvailWidth #.(cl:ash 1 11))
+	(:SpanFullWidth #.(cl:ash 1 12))
+	(:NavLeftJumpsBackHere #.(cl:ash 1 13))
+	(:CollapsingHeader #.(cl:logior (cl:ash 1 1) (cl:ash 1 3) (cl:ash 1 4))))
 
-(cffi:defcenum ImGuiPopupFlags_
-	(:ImGuiPopupFlags_None #.0)
-	(:ImGuiPopupFlags_MouseButtonLeft #.0)
-	(:ImGuiPopupFlags_MouseButtonRight #.1)
-	(:ImGuiPopupFlags_MouseButtonMiddle #.2)
-	(:ImGuiPopupFlags_MouseButtonMask_ #.#x1F)
-	(:ImGuiPopupFlags_MouseButtonDefault_ #.1)
-	(:ImGuiPopupFlags_NoOpenOverExistingPopup #.(cl:ash 1 5))
-	(:ImGuiPopupFlags_NoOpenOverItems #.(cl:ash 1 6))
-	(:ImGuiPopupFlags_AnyPopupId #.(cl:ash 1 7))
-	(:ImGuiPopupFlags_AnyPopupLevel #.(cl:ash 1 8))
-	(:ImGuiPopupFlags_AnyPopup #.(cl:logior (cl:ash 1 7) (cl:ash 1 8))))
+(cffi:defcenum PopupFlags_
+	(:None #.0)
+	(:MouseButtonLeft #.0)
+	(:MouseButtonRight #.1)
+	(:MouseButtonMiddle #.2)
+	(:MouseButtonMask_ #.#x1F)
+	(:MouseButtonDefault_ #.1)
+	(:NoOpenOverExistingPopup #.(cl:ash 1 5))
+	(:NoOpenOverItems #.(cl:ash 1 6))
+	(:AnyPopupId #.(cl:ash 1 7))
+	(:AnyPopupLevel #.(cl:ash 1 8))
+	(:AnyPopup #.(cl:logior (cl:ash 1 7) (cl:ash 1 8))))
 
-(cffi:defcenum ImGuiSelectableFlags_
-	(:ImGuiSelectableFlags_None #.0)
-	(:ImGuiSelectableFlags_DontClosePopups #.(cl:ash 1 0))
-	(:ImGuiSelectableFlags_SpanAllColumns #.(cl:ash 1 1))
-	(:ImGuiSelectableFlags_AllowDoubleClick #.(cl:ash 1 2))
-	(:ImGuiSelectableFlags_Disabled #.(cl:ash 1 3))
-	(:ImGuiSelectableFlags_AllowItemOverlap #.(cl:ash 1 4)))
+(cffi:defcenum SelectableFlags_
+	(:None #.0)
+	(:DontClosePopups #.(cl:ash 1 0))
+	(:SpanAllColumns #.(cl:ash 1 1))
+	(:AllowDoubleClick #.(cl:ash 1 2))
+	(:Disabled #.(cl:ash 1 3))
+	(:AllowItemOverlap #.(cl:ash 1 4)))
 
-(cffi:defcenum ImGuiComboFlags_
-	(:ImGuiComboFlags_None #.0)
-	(:ImGuiComboFlags_PopupAlignLeft #.(cl:ash 1 0))
-	(:ImGuiComboFlags_HeightSmall #.(cl:ash 1 1))
-	(:ImGuiComboFlags_HeightRegular #.(cl:ash 1 2))
-	(:ImGuiComboFlags_HeightLarge #.(cl:ash 1 3))
-	(:ImGuiComboFlags_HeightLargest #.(cl:ash 1 4))
-	(:ImGuiComboFlags_NoArrowButton #.(cl:ash 1 5))
-	(:ImGuiComboFlags_NoPreview #.(cl:ash 1 6))
-	(:ImGuiComboFlags_HeightMask_ #.(cl:logior (cl:ash 1 1) (cl:ash 1 2) (cl:ash 1 3) (cl:ash 1 4))))
+(cffi:defcenum ComboFlags_
+	(:None #.0)
+	(:PopupAlignLeft #.(cl:ash 1 0))
+	(:HeightSmall #.(cl:ash 1 1))
+	(:HeightRegular #.(cl:ash 1 2))
+	(:HeightLarge #.(cl:ash 1 3))
+	(:HeightLargest #.(cl:ash 1 4))
+	(:NoArrowButton #.(cl:ash 1 5))
+	(:NoPreview #.(cl:ash 1 6))
+	(:HeightMask_ #.(cl:logior (cl:ash 1 1) (cl:ash 1 2) (cl:ash 1 3) (cl:ash 1 4))))
 
-(cffi:defcenum ImGuiTabBarFlags_
-	(:ImGuiTabBarFlags_None #.0)
-	(:ImGuiTabBarFlags_Reorderable #.(cl:ash 1 0))
-	(:ImGuiTabBarFlags_AutoSelectNewTabs #.(cl:ash 1 1))
-	(:ImGuiTabBarFlags_TabListPopupButton #.(cl:ash 1 2))
-	(:ImGuiTabBarFlags_NoCloseWithMiddleMouseButton #.(cl:ash 1 3))
-	(:ImGuiTabBarFlags_NoTabListScrollingButtons #.(cl:ash 1 4))
-	(:ImGuiTabBarFlags_NoTooltip #.(cl:ash 1 5))
-	(:ImGuiTabBarFlags_FittingPolicyResizeDown #.(cl:ash 1 6))
-	(:ImGuiTabBarFlags_FittingPolicyScroll #.(cl:ash 1 7))
-	(:ImGuiTabBarFlags_FittingPolicyMask_ #.(cl:logior (cl:ash 1 6) (cl:ash 1 7)))
-	(:ImGuiTabBarFlags_FittingPolicyDefault_ #.(cl:ash 1 6)))
+(cffi:defcenum TabBarFlags_
+	(:None #.0)
+	(:Reorderable #.(cl:ash 1 0))
+	(:AutoSelectNewTabs #.(cl:ash 1 1))
+	(:TabListPopupButton #.(cl:ash 1 2))
+	(:NoCloseWithMiddleMouseButton #.(cl:ash 1 3))
+	(:NoTabListScrollingButtons #.(cl:ash 1 4))
+	(:NoTooltip #.(cl:ash 1 5))
+	(:FittingPolicyResizeDown #.(cl:ash 1 6))
+	(:FittingPolicyScroll #.(cl:ash 1 7))
+	(:FittingPolicyMask_ #.(cl:logior (cl:ash 1 6) (cl:ash 1 7)))
+	(:FittingPolicyDefault_ #.(cl:ash 1 6)))
 
-(cffi:defcenum ImGuiTabItemFlags_
-	(:ImGuiTabItemFlags_None #.0)
-	(:ImGuiTabItemFlags_UnsavedDocument #.(cl:ash 1 0))
-	(:ImGuiTabItemFlags_SetSelected #.(cl:ash 1 1))
-	(:ImGuiTabItemFlags_NoCloseWithMiddleMouseButton #.(cl:ash 1 2))
-	(:ImGuiTabItemFlags_NoPushId #.(cl:ash 1 3))
-	(:ImGuiTabItemFlags_NoTooltip #.(cl:ash 1 4)))
+(cffi:defcenum TabItemFlags_
+	(:None #.0)
+	(:UnsavedDocument #.(cl:ash 1 0))
+	(:SetSelected #.(cl:ash 1 1))
+	(:NoCloseWithMiddleMouseButton #.(cl:ash 1 2))
+	(:NoPushId #.(cl:ash 1 3))
+	(:NoTooltip #.(cl:ash 1 4)))
 
-(cffi:defcenum ImGuiFocusedFlags_
-	(:ImGuiFocusedFlags_None #.0)
-	(:ImGuiFocusedFlags_ChildWindows #.(cl:ash 1 0))
-	(:ImGuiFocusedFlags_RootWindow #.(cl:ash 1 1))
-	(:ImGuiFocusedFlags_AnyWindow #.(cl:ash 1 2))
-	(:ImGuiFocusedFlags_RootAndChildWindows #.(cl:logior (cl:ash 1 1) (cl:ash 1 0))))
+(cffi:defcenum FocusedFlags_
+	(:None #.0)
+	(:ChildWindows #.(cl:ash 1 0))
+	(:RootWindow #.(cl:ash 1 1))
+	(:AnyWindow #.(cl:ash 1 2))
+	(:RootAndChildWindows #.(cl:logior (cl:ash 1 1) (cl:ash 1 0))))
 
-(cffi:defcenum ImGuiHoveredFlags_
-	(:ImGuiHoveredFlags_None #.0)
-	(:ImGuiHoveredFlags_ChildWindows #.(cl:ash 1 0))
-	(:ImGuiHoveredFlags_RootWindow #.(cl:ash 1 1))
-	(:ImGuiHoveredFlags_AnyWindow #.(cl:ash 1 2))
-	(:ImGuiHoveredFlags_AllowWhenBlockedByPopup #.(cl:ash 1 3))
-	(:ImGuiHoveredFlags_AllowWhenBlockedByActiveItem #.(cl:ash 1 5))
-	(:ImGuiHoveredFlags_AllowWhenOverlapped #.(cl:ash 1 6))
-	(:ImGuiHoveredFlags_AllowWhenDisabled #.(cl:ash 1 7))
-	(:ImGuiHoveredFlags_RectOnly #.(cl:logior (cl:ash 1 3) (cl:ash 1 5) (cl:ash 1 6)))
-	(:ImGuiHoveredFlags_RootAndChildWindows #.(cl:logior (cl:ash 1 1) (cl:ash 1 0))))
+(cffi:defcenum HoveredFlags_
+	(:None #.0)
+	(:ChildWindows #.(cl:ash 1 0))
+	(:RootWindow #.(cl:ash 1 1))
+	(:AnyWindow #.(cl:ash 1 2))
+	(:AllowWhenBlockedByPopup #.(cl:ash 1 3))
+	(:AllowWhenBlockedByActiveItem #.(cl:ash 1 5))
+	(:AllowWhenOverlapped #.(cl:ash 1 6))
+	(:AllowWhenDisabled #.(cl:ash 1 7))
+	(:RectOnly #.(cl:logior (cl:ash 1 3) (cl:ash 1 5) (cl:ash 1 6)))
+	(:RootAndChildWindows #.(cl:logior (cl:ash 1 1) (cl:ash 1 0))))
 
-(cffi:defcenum ImGuiDragDropFlags_
-	(:ImGuiDragDropFlags_None #.0)
-	(:ImGuiDragDropFlags_SourceNoPreviewTooltip #.(cl:ash 1 0))
-	(:ImGuiDragDropFlags_SourceNoDisableHover #.(cl:ash 1 1))
-	(:ImGuiDragDropFlags_SourceNoHoldToOpenOthers #.(cl:ash 1 2))
-	(:ImGuiDragDropFlags_SourceAllowNullID #.(cl:ash 1 3))
-	(:ImGuiDragDropFlags_SourceExtern #.(cl:ash 1 4))
-	(:ImGuiDragDropFlags_SourceAutoExpirePayload #.(cl:ash 1 5))
-	(:ImGuiDragDropFlags_AcceptBeforeDelivery #.(cl:ash 1 10))
-	(:ImGuiDragDropFlags_AcceptNoDrawDefaultRect #.(cl:ash 1 11))
-	(:ImGuiDragDropFlags_AcceptNoPreviewTooltip #.(cl:ash 1 12))
-	(:ImGuiDragDropFlags_AcceptPeekOnly #.(cl:logior (cl:ash 1 10) (cl:ash 1 11))))
+(cffi:defcenum DragDropFlags_
+	(:None #.0)
+	(:SourceNoPreviewTooltip #.(cl:ash 1 0))
+	(:SourceNoDisableHover #.(cl:ash 1 1))
+	(:SourceNoHoldToOpenOthers #.(cl:ash 1 2))
+	(:SourceAllowNullID #.(cl:ash 1 3))
+	(:SourceExtern #.(cl:ash 1 4))
+	(:SourceAutoExpirePayload #.(cl:ash 1 5))
+	(:AcceptBeforeDelivery #.(cl:ash 1 10))
+	(:AcceptNoDrawDefaultRect #.(cl:ash 1 11))
+	(:AcceptNoPreviewTooltip #.(cl:ash 1 12))
+	(:AcceptPeekOnly #.(cl:logior (cl:ash 1 10) (cl:ash 1 11))))
 
 (cl:defconstant IMGUI_PAYLOAD_TYPE_COLOR_3F "_COL3F")
 
 (cl:defconstant IMGUI_PAYLOAD_TYPE_COLOR_4F "_COL4F")
 
-(cffi:defcenum ImGuiDataType_
-	:ImGuiDataType_S8
-	:ImGuiDataType_U8
-	:ImGuiDataType_S16
-	:ImGuiDataType_U16
-	:ImGuiDataType_S32
-	:ImGuiDataType_U32
-	:ImGuiDataType_S64
-	:ImGuiDataType_U64
-	:ImGuiDataType_Float
-	:ImGuiDataType_Double
-	:ImGuiDataType_COUNT)
+(cffi:defcenum DataType_
+	:S8
+	:U8
+	:S16
+	:U16
+	:S32
+	:U32
+	:S64
+	:U64
+	:Float
+	:Double
+	:COUNT)
 
-(cffi:defcenum ImGuiDir_
-	(:ImGuiDir_None #.-1)
-	(:ImGuiDir_Left #.0)
-	(:ImGuiDir_Right #.1)
-	(:ImGuiDir_Up #.2)
-	(:ImGuiDir_Down #.3)
-	:ImGuiDir_COUNT)
+(cffi:defcenum Dir_
+	(:None #.-1)
+	(:Left #.0)
+	(:Right #.1)
+	(:Up #.2)
+	(:Down #.3)
+	:COUNT)
 
-(cffi:defcenum ImGuiKey_
-	:ImGuiKey_Tab
-	:ImGuiKey_LeftArrow
-	:ImGuiKey_RightArrow
-	:ImGuiKey_UpArrow
-	:ImGuiKey_DownArrow
-	:ImGuiKey_PageUp
-	:ImGuiKey_PageDown
-	:ImGuiKey_Home
-	:ImGuiKey_End
-	:ImGuiKey_Insert
-	:ImGuiKey_Delete
-	:ImGuiKey_Backspace
-	:ImGuiKey_Space
-	:ImGuiKey_Enter
-	:ImGuiKey_Escape
-	:ImGuiKey_KeyPadEnter
-	:ImGuiKey_A
-	:ImGuiKey_C
-	:ImGuiKey_V
-	:ImGuiKey_X
-	:ImGuiKey_Y
-	:ImGuiKey_Z
-	:ImGuiKey_COUNT)
+(cffi:defcenum Key_
+	:Tab
+	:LeftArrow
+	:RightArrow
+	:UpArrow
+	:DownArrow
+	:PageUp
+	:PageDown
+	:Home
+	:End
+	:Insert
+	:Delete
+	:Backspace
+	:Space
+	:Enter
+	:Escape
+	:KeyPadEnter
+	:A
+	:C
+	:V
+	:X
+	:Y
+	:Z
+	:COUNT)
 
-(cffi:defcenum ImGuiKeyModFlags_
-	(:ImGuiKeyModFlags_None #.0)
-	(:ImGuiKeyModFlags_Ctrl #.(cl:ash 1 0))
-	(:ImGuiKeyModFlags_Shift #.(cl:ash 1 1))
-	(:ImGuiKeyModFlags_Alt #.(cl:ash 1 2))
-	(:ImGuiKeyModFlags_Super #.(cl:ash 1 3)))
+(cffi:defcenum KeyModFlags_
+	(:None #.0)
+	(:Ctrl #.(cl:ash 1 0))
+	(:Shift #.(cl:ash 1 1))
+	(:Alt #.(cl:ash 1 2))
+	(:Super #.(cl:ash 1 3)))
 
-(cffi:defcenum ImGuiNavInput_
-	:ImGuiNavInput_Activate
-	:ImGuiNavInput_Cancel
-	:ImGuiNavInput_Input
-	:ImGuiNavInput_Menu
-	:ImGuiNavInput_DpadLeft
-	:ImGuiNavInput_DpadRight
-	:ImGuiNavInput_DpadUp
-	:ImGuiNavInput_DpadDown
-	:ImGuiNavInput_LStickLeft
-	:ImGuiNavInput_LStickRight
-	:ImGuiNavInput_LStickUp
-	:ImGuiNavInput_LStickDown
-	:ImGuiNavInput_FocusPrev
-	:ImGuiNavInput_FocusNext
-	:ImGuiNavInput_TweakSlow
-	:ImGuiNavInput_TweakFast
-	:ImGuiNavInput_KeyMenu_
-	:ImGuiNavInput_KeyLeft_
-	:ImGuiNavInput_KeyRight_
-	:ImGuiNavInput_KeyUp_
-	:ImGuiNavInput_KeyDown_
-	:ImGuiNavInput_COUNT
-	(:ImGuiNavInput_InternalStart_ #.16))
+(cffi:defcenum NavInput_
+	:Activate
+	:Cancel
+	:Input
+	:Menu
+	:DpadLeft
+	:DpadRight
+	:DpadUp
+	:DpadDown
+	:LStickLeft
+	:LStickRight
+	:LStickUp
+	:LStickDown
+	:FocusPrev
+	:FocusNext
+	:TweakSlow
+	:TweakFast
+	:KeyMenu_
+	:KeyLeft_
+	:KeyRight_
+	:KeyUp_
+	:KeyDown_
+	:COUNT
+	(:InternalStart_ #.16))
 
-(cffi:defcenum ImGuiConfigFlags_
-	(:ImGuiConfigFlags_None #.0)
-	(:ImGuiConfigFlags_NavEnableKeyboard #.(cl:ash 1 0))
-	(:ImGuiConfigFlags_NavEnableGamepad #.(cl:ash 1 1))
-	(:ImGuiConfigFlags_NavEnableSetMousePos #.(cl:ash 1 2))
-	(:ImGuiConfigFlags_NavNoCaptureKeyboard #.(cl:ash 1 3))
-	(:ImGuiConfigFlags_NoMouse #.(cl:ash 1 4))
-	(:ImGuiConfigFlags_NoMouseCursorChange #.(cl:ash 1 5))
-	(:ImGuiConfigFlags_IsSRGB #.(cl:ash 1 20))
-	(:ImGuiConfigFlags_IsTouchScreen #.(cl:ash 1 21)))
+(cffi:defcenum ConfigFlags_
+	(:None #.0)
+	(:NavEnableKeyboard #.(cl:ash 1 0))
+	(:NavEnableGamepad #.(cl:ash 1 1))
+	(:NavEnableSetMousePos #.(cl:ash 1 2))
+	(:NavNoCaptureKeyboard #.(cl:ash 1 3))
+	(:NoMouse #.(cl:ash 1 4))
+	(:NoMouseCursorChange #.(cl:ash 1 5))
+	(:IsSRGB #.(cl:ash 1 20))
+	(:IsTouchScreen #.(cl:ash 1 21)))
 
-(cffi:defcenum ImGuiBackendFlags_
-	(:ImGuiBackendFlags_None #.0)
-	(:ImGuiBackendFlags_HasGamepad #.(cl:ash 1 0))
-	(:ImGuiBackendFlags_HasMouseCursors #.(cl:ash 1 1))
-	(:ImGuiBackendFlags_HasSetMousePos #.(cl:ash 1 2))
-	(:ImGuiBackendFlags_RendererHasVtxOffset #.(cl:ash 1 3)))
+(cffi:defcenum BackendFlags_
+	(:None #.0)
+	(:HasGamepad #.(cl:ash 1 0))
+	(:HasMouseCursors #.(cl:ash 1 1))
+	(:HasSetMousePos #.(cl:ash 1 2))
+	(:RendererHasVtxOffset #.(cl:ash 1 3)))
 
-(cffi:defcenum ImGuiCol_
-	:ImGuiCol_Text
-	:ImGuiCol_TextDisabled
-	:ImGuiCol_WindowBg
-	:ImGuiCol_ChildBg
-	:ImGuiCol_PopupBg
-	:ImGuiCol_Border
-	:ImGuiCol_BorderShadow
-	:ImGuiCol_FrameBg
-	:ImGuiCol_FrameBgHovered
-	:ImGuiCol_FrameBgActive
-	:ImGuiCol_TitleBg
-	:ImGuiCol_TitleBgActive
-	:ImGuiCol_TitleBgCollapsed
-	:ImGuiCol_MenuBarBg
-	:ImGuiCol_ScrollbarBg
-	:ImGuiCol_ScrollbarGrab
-	:ImGuiCol_ScrollbarGrabHovered
-	:ImGuiCol_ScrollbarGrabActive
-	:ImGuiCol_CheckMark
-	:ImGuiCol_SliderGrab
-	:ImGuiCol_SliderGrabActive
-	:ImGuiCol_Button
-	:ImGuiCol_ButtonHovered
-	:ImGuiCol_ButtonActive
-	:ImGuiCol_Header
-	:ImGuiCol_HeaderHovered
-	:ImGuiCol_HeaderActive
-	:ImGuiCol_Separator
-	:ImGuiCol_SeparatorHovered
-	:ImGuiCol_SeparatorActive
-	:ImGuiCol_ResizeGrip
-	:ImGuiCol_ResizeGripHovered
-	:ImGuiCol_ResizeGripActive
-	:ImGuiCol_Tab
-	:ImGuiCol_TabHovered
-	:ImGuiCol_TabActive
-	:ImGuiCol_TabUnfocused
-	:ImGuiCol_TabUnfocusedActive
-	:ImGuiCol_PlotLines
-	:ImGuiCol_PlotLinesHovered
-	:ImGuiCol_PlotHistogram
-	:ImGuiCol_PlotHistogramHovered
-	:ImGuiCol_TextSelectedBg
-	:ImGuiCol_DragDropTarget
-	:ImGuiCol_NavHighlight
-	:ImGuiCol_NavWindowingHighlight
-	:ImGuiCol_NavWindowingDimBg
-	:ImGuiCol_ModalWindowDimBg
-	:ImGuiCol_COUNT
-	(:ImGuiCol_ModalWindowDarkening #.47))
+(cffi:defcenum Col_
+	:Text
+	:TextDisabled
+	:WindowBg
+	:ChildBg
+	:PopupBg
+	:Border
+	:BorderShadow
+	:FrameBg
+	:FrameBgHovered
+	:FrameBgActive
+	:TitleBg
+	:TitleBgActive
+	:TitleBgCollapsed
+	:MenuBarBg
+	:ScrollbarBg
+	:ScrollbarGrab
+	:ScrollbarGrabHovered
+	:ScrollbarGrabActive
+	:CheckMark
+	:SliderGrab
+	:SliderGrabActive
+	:Button
+	:ButtonHovered
+	:ButtonActive
+	:Header
+	:HeaderHovered
+	:HeaderActive
+	:Separator
+	:SeparatorHovered
+	:SeparatorActive
+	:ResizeGrip
+	:ResizeGripHovered
+	:ResizeGripActive
+	:Tab
+	:TabHovered
+	:TabActive
+	:TabUnfocused
+	:TabUnfocusedActive
+	:PlotLines
+	:PlotLinesHovered
+	:PlotHistogram
+	:PlotHistogramHovered
+	:TextSelectedBg
+	:DragDropTarget
+	:NavHighlight
+	:NavWindowingHighlight
+	:NavWindowingDimBg
+	:ModalWindowDimBg
+	:COUNT
+	(:ModalWindowDarkening #.47))
 
-(cffi:defcenum ImGuiStyleVar_
-	:ImGuiStyleVar_Alpha
-	:ImGuiStyleVar_WindowPadding
-	:ImGuiStyleVar_WindowRounding
-	:ImGuiStyleVar_WindowBorderSize
-	:ImGuiStyleVar_WindowMinSize
-	:ImGuiStyleVar_WindowTitleAlign
-	:ImGuiStyleVar_ChildRounding
-	:ImGuiStyleVar_ChildBorderSize
-	:ImGuiStyleVar_PopupRounding
-	:ImGuiStyleVar_PopupBorderSize
-	:ImGuiStyleVar_FramePadding
-	:ImGuiStyleVar_FrameRounding
-	:ImGuiStyleVar_FrameBorderSize
-	:ImGuiStyleVar_ItemSpacing
-	:ImGuiStyleVar_ItemInnerSpacing
-	:ImGuiStyleVar_IndentSpacing
-	:ImGuiStyleVar_ScrollbarSize
-	:ImGuiStyleVar_ScrollbarRounding
-	:ImGuiStyleVar_GrabMinSize
-	:ImGuiStyleVar_GrabRounding
-	:ImGuiStyleVar_TabRounding
-	:ImGuiStyleVar_ButtonTextAlign
-	:ImGuiStyleVar_SelectableTextAlign
-	:ImGuiStyleVar_COUNT
-	(:ImGuiStyleVar_Count_ #.23))
+(cffi:defcenum StyleVar_
+	:Alpha
+	:WindowPadding
+	:WindowRounding
+	:WindowBorderSize
+	:WindowMinSize
+	:WindowTitleAlign
+	:ChildRounding
+	:ChildBorderSize
+	:PopupRounding
+	:PopupBorderSize
+	:FramePadding
+	:FrameRounding
+	:FrameBorderSize
+	:ItemSpacing
+	:ItemInnerSpacing
+	:IndentSpacing
+	:ScrollbarSize
+	:ScrollbarRounding
+	:GrabMinSize
+	:GrabRounding
+	:TabRounding
+	:ButtonTextAlign
+	:SelectableTextAlign
+	:COUNT
+	(:Count_ #.23))
 
-(cffi:defcenum ImGuiButtonFlags_
-	(:ImGuiButtonFlags_None #.0)
-	(:ImGuiButtonFlags_MouseButtonLeft #.(cl:ash 1 0))
-	(:ImGuiButtonFlags_MouseButtonRight #.(cl:ash 1 1))
-	(:ImGuiButtonFlags_MouseButtonMiddle #.(cl:ash 1 2))
-	(:ImGuiButtonFlags_MouseButtonMask_ #.(cl:logior (cl:ash 1 0) (cl:ash 1 1) (cl:ash 1 2)))
-	(:ImGuiButtonFlags_MouseButtonDefault_ #.(cl:ash 1 0)))
+(cffi:defcenum ButtonFlags_
+	(:None #.0)
+	(:MouseButtonLeft #.(cl:ash 1 0))
+	(:MouseButtonRight #.(cl:ash 1 1))
+	(:MouseButtonMiddle #.(cl:ash 1 2))
+	(:MouseButtonMask_ #.(cl:logior (cl:ash 1 0) (cl:ash 1 1) (cl:ash 1 2)))
+	(:MouseButtonDefault_ #.(cl:ash 1 0)))
 
-(cffi:defcenum ImGuiColorEditFlags_
-	(:ImGuiColorEditFlags_None #.0)
-	(:ImGuiColorEditFlags_NoAlpha #.(cl:ash 1 1))
-	(:ImGuiColorEditFlags_NoPicker #.(cl:ash 1 2))
-	(:ImGuiColorEditFlags_NoOptions #.(cl:ash 1 3))
-	(:ImGuiColorEditFlags_NoSmallPreview #.(cl:ash 1 4))
-	(:ImGuiColorEditFlags_NoInputs #.(cl:ash 1 5))
-	(:ImGuiColorEditFlags_NoTooltip #.(cl:ash 1 6))
-	(:ImGuiColorEditFlags_NoLabel #.(cl:ash 1 7))
-	(:ImGuiColorEditFlags_NoSidePreview #.(cl:ash 1 8))
-	(:ImGuiColorEditFlags_NoDragDrop #.(cl:ash 1 9))
-	(:ImGuiColorEditFlags_NoBorder #.(cl:ash 1 10))
-	(:ImGuiColorEditFlags_AlphaBar #.(cl:ash 1 16))
-	(:ImGuiColorEditFlags_AlphaPreview #.(cl:ash 1 17))
-	(:ImGuiColorEditFlags_AlphaPreviewHalf #.(cl:ash 1 18))
-	(:ImGuiColorEditFlags_HDR #.(cl:ash 1 19))
-	(:ImGuiColorEditFlags_DisplayRGB #.(cl:ash 1 20))
-	(:ImGuiColorEditFlags_DisplayHSV #.(cl:ash 1 21))
-	(:ImGuiColorEditFlags_DisplayHex #.(cl:ash 1 22))
-	(:ImGuiColorEditFlags_Uint8 #.(cl:ash 1 23))
-	(:ImGuiColorEditFlags_Float #.(cl:ash 1 24))
-	(:ImGuiColorEditFlags_PickerHueBar #.(cl:ash 1 25))
-	(:ImGuiColorEditFlags_PickerHueWheel #.(cl:ash 1 26))
-	(:ImGuiColorEditFlags_InputRGB #.(cl:ash 1 27))
-	(:ImGuiColorEditFlags_InputHSV #.(cl:ash 1 28))
-	(:ImGuiColorEditFlags__OptionsDefault #.(cl:logior (cl:ash 1 23) (cl:ash 1 20) (cl:ash 1 27) (cl:ash 1 25)))
-	(:ImGuiColorEditFlags__DisplayMask #.(cl:logior (cl:ash 1 20) (cl:ash 1 21) (cl:ash 1 22)))
-	(:ImGuiColorEditFlags__DataTypeMask #.(cl:logior (cl:ash 1 23) (cl:ash 1 24)))
-	(:ImGuiColorEditFlags__PickerMask #.(cl:logior (cl:ash 1 26) (cl:ash 1 25)))
-	(:ImGuiColorEditFlags__InputMask #.(cl:logior (cl:ash 1 27) (cl:ash 1 28)))
-	(:ImGuiColorEditFlags_RGB #.(cl:ash 1 20))
-	(:ImGuiColorEditFlags_HSV #.(cl:ash 1 21))
-	(:ImGuiColorEditFlags_HEX #.(cl:ash 1 22)))
+(cffi:defcenum ColorEditFlags_
+	(:None #.0)
+	(:NoAlpha #.(cl:ash 1 1))
+	(:NoPicker #.(cl:ash 1 2))
+	(:NoOptions #.(cl:ash 1 3))
+	(:NoSmallPreview #.(cl:ash 1 4))
+	(:NoInputs #.(cl:ash 1 5))
+	(:NoTooltip #.(cl:ash 1 6))
+	(:NoLabel #.(cl:ash 1 7))
+	(:NoSidePreview #.(cl:ash 1 8))
+	(:NoDragDrop #.(cl:ash 1 9))
+	(:NoBorder #.(cl:ash 1 10))
+	(:AlphaBar #.(cl:ash 1 16))
+	(:AlphaPreview #.(cl:ash 1 17))
+	(:AlphaPreviewHalf #.(cl:ash 1 18))
+	(:HDR #.(cl:ash 1 19))
+	(:DisplayRGB #.(cl:ash 1 20))
+	(:DisplayHSV #.(cl:ash 1 21))
+	(:DisplayHex #.(cl:ash 1 22))
+	(:Uint8 #.(cl:ash 1 23))
+	(:Float #.(cl:ash 1 24))
+	(:PickerHueBar #.(cl:ash 1 25))
+	(:PickerHueWheel #.(cl:ash 1 26))
+	(:InputRGB #.(cl:ash 1 27))
+	(:InputHSV #.(cl:ash 1 28))
+	(:_OptionsDefault #.(cl:logior (cl:ash 1 23) (cl:ash 1 20) (cl:ash 1 27) (cl:ash 1 25)))
+	(:_DisplayMask #.(cl:logior (cl:ash 1 20) (cl:ash 1 21) (cl:ash 1 22)))
+	(:_DataTypeMask #.(cl:logior (cl:ash 1 23) (cl:ash 1 24)))
+	(:_PickerMask #.(cl:logior (cl:ash 1 26) (cl:ash 1 25)))
+	(:_InputMask #.(cl:logior (cl:ash 1 27) (cl:ash 1 28)))
+	(:RGB #.(cl:ash 1 20))
+	(:HSV #.(cl:ash 1 21))
+	(:HEX #.(cl:ash 1 22)))
 
-(cffi:defcenum ImGuiSliderFlags_
-	(:ImGuiSliderFlags_None #.0)
-	(:ImGuiSliderFlags_ClampOnInput #.(cl:ash 1 4))
-	(:ImGuiSliderFlags_Logarithmic #.(cl:ash 1 5))
-	(:ImGuiSliderFlags_NoRoundToFormat #.(cl:ash 1 6))
-	(:ImGuiSliderFlags_NoInput #.(cl:ash 1 7))
-	(:ImGuiSliderFlags_InvalidMask_ #.#x7000000F))
+(cffi:defcenum SliderFlags_
+	(:None #.0)
+	(:ClampOnInput #.(cl:ash 1 4))
+	(:Logarithmic #.(cl:ash 1 5))
+	(:NoRoundToFormat #.(cl:ash 1 6))
+	(:NoInput #.(cl:ash 1 7))
+	(:InvalidMask_ #.#x7000000F))
 
-(cffi:defcenum ImGuiMouseButton_
-	(:ImGuiMouseButton_Left #.0)
-	(:ImGuiMouseButton_Right #.1)
-	(:ImGuiMouseButton_Middle #.2)
-	(:ImGuiMouseButton_COUNT #.5))
+(cffi:defcenum MouseButton_
+	(:Left #.0)
+	(:Right #.1)
+	(:Middle #.2)
+	(:COUNT #.5))
 
-(cffi:defcenum ImGuiMouseCursor_
-	(:ImGuiMouseCursor_None #.-1)
-	(:ImGuiMouseCursor_Arrow #.0)
-	:ImGuiMouseCursor_TextInput
-	:ImGuiMouseCursor_ResizeAll
-	:ImGuiMouseCursor_ResizeNS
-	:ImGuiMouseCursor_ResizeEW
-	:ImGuiMouseCursor_ResizeNESW
-	:ImGuiMouseCursor_ResizeNWSE
-	:ImGuiMouseCursor_Hand
-	:ImGuiMouseCursor_NotAllowed
-	:ImGuiMouseCursor_COUNT
-	(:ImGuiMouseCursor_Count_ #.9))
+(cffi:defcenum MouseCursor_
+	(:None #.-1)
+	(:Arrow #.0)
+	:TextInput
+	:ResizeAll
+	:ResizeNS
+	:ResizeEW
+	:ResizeNESW
+	:ResizeNWSE
+	:Hand
+	:NotAllowed
+	:COUNT
+	(:Count_ #.9))
 
-(cffi:defcenum ImGuiCond_
-	(:ImGuiCond_None #.0)
-	(:ImGuiCond_Always #.(cl:ash 1 0))
-	(:ImGuiCond_Once #.(cl:ash 1 1))
-	(:ImGuiCond_FirstUseEver #.(cl:ash 1 2))
-	(:ImGuiCond_Appearing #.(cl:ash 1 3)))
+(cffi:defcenum Cond_
+	(:None #.0)
+	(:Always #.(cl:ash 1 0))
+	(:Once #.(cl:ash 1 1))
+	(:FirstUseEver #.(cl:ash 1 2))
+	(:Appearing #.(cl:ash 1 3)))
 
 (cffi:defcstruct ImNewWrapper)
 
-(cffi:defcstruct ImGuiStyle
+(cffi:defcstruct Style
 	(Alpha :float)
 	(WindowPadding ImVec2)
 	(WindowRounding :float)
@@ -3473,10 +3484,10 @@
 	(AntiAliasedFill :pointer)
 	(CurveTessellationTol :float)
 	(CircleSegmentMaxError :float)
-	(Colors :pointer :count #.(cffi:foreign-enum-value 'ImGuiCol_ :ImGuiCol_COUNT))
+	(Colors :pointer :count #.(cffi:foreign-enum-value 'Col_ :COUNT))
 	(ScaleAllSizes :pointer))
 
-(cffi:defcstruct ImGuiIO
+(cffi:defcstruct IO
 	(ConfigFlags :int)
 	(BackendFlags :int)
 	(DisplaySize ImVec2)
@@ -3487,7 +3498,7 @@
 	(MouseDoubleClickTime :float)
 	(MouseDoubleClickMaxDist :float)
 	(MouseDragThreshold :float)
-	(KeyMap :pointer :count #.(cffi:foreign-enum-value 'ImGuiKey_ :ImGuiKey_COUNT))
+	(KeyMap :pointer :count #.(cffi:foreign-enum-value 'Key_ :COUNT))
 	(KeyRepeatDelay :float)
 	(KeyRepeatRate :float)
 	(UserData :pointer)
@@ -3522,7 +3533,7 @@
 	(KeyAlt :pointer)
 	(KeySuper :pointer)
 	(KeysDown :pointer :count 512)
-	(NavInputs :pointer :count #.(cffi:foreign-enum-value 'ImGuiNavInput_ :ImGuiNavInput_COUNT))
+	(NavInputs :pointer :count #.(cffi:foreign-enum-value 'NavInput_ :COUNT))
 	(AddInputCharacter :pointer)
 	(AddInputCharacterUTF16 :pointer)
 	(AddInputCharactersUTF8 :pointer)
@@ -3556,13 +3567,13 @@
 	(MouseDragMaxDistanceSqr :pointer :count 5)
 	(KeysDownDuration :pointer :count 512)
 	(KeysDownDurationPrev :pointer :count 512)
-	(NavInputsDownDuration :pointer :count #.(cffi:foreign-enum-value 'ImGuiNavInput_ :ImGuiNavInput_COUNT))
-	(NavInputsDownDurationPrev :pointer :count #.(cffi:foreign-enum-value 'ImGuiNavInput_ :ImGuiNavInput_COUNT))
+	(NavInputsDownDuration :pointer :count #.(cffi:foreign-enum-value 'NavInput_ :COUNT))
+	(NavInputsDownDurationPrev :pointer :count #.(cffi:foreign-enum-value 'NavInput_ :COUNT))
 	(PenPressure :float)
 	(InputQueueSurrogate :unsigned-short)
 	(InputQueueCharacters :pointer))
 
-(cffi:defcstruct ImGuiInputTextCallbackData
+(cffi:defcstruct InputTextCallbackData
 	(EventFlag :int)
 	(Flags :int)
 	(UserData :pointer)
@@ -3580,13 +3591,13 @@
 	(InsertChars :pointer)
 	(HasSelection :pointer))
 
-(cffi:defcstruct ImGuiSizeCallbackData
+(cffi:defcstruct SizeCallbackData
 	(UserData :pointer)
 	(Pos ImVec2)
 	(CurrentSize ImVec2)
 	(DesiredSize ImVec2))
 
-(cffi:defcstruct ImGuiPayload
+(cffi:defcstruct Payload
 	(Data :pointer)
 	(DataSize :int)
 	(SourceId :unsigned-int)
@@ -3794,18 +3805,18 @@
 
 (cffi:defcfun ("_wrap_IsAnyWindowHovered" IsAnyWindowHovered) :pointer)
 
-(cffi:defctype ImGuiTextEditCallback :pointer)
+(cffi:defctype TextEditCallback :pointer)
 
-(cffi:defctype ImGuiTextEditCallbackData ImGuiInputTextCallbackData)
+(cffi:defctype TextEditCallbackData InputTextCallbackData)
 
 (cl:defconstant IM_UNICODE_CODEPOINT_INVALID #xFFFD)
 
 (cl:defconstant IM_UNICODE_CODEPOINT_MAX #xFFFF)
 
-(cffi:defcstruct ImGuiOnceUponAFrame
+(cffi:defcstruct OnceUponAFrame
 	(RefFrame :int))
 
-(cffi:defcstruct ImGuiTextFilter
+(cffi:defcstruct TextFilter
 	(Draw :pointer)
 	(Draw :pointer)
 	(Draw :pointer)
@@ -3818,13 +3829,13 @@
 	(Filters :pointer)
 	(CountGrep :int))
 
-(cffi:defcstruct ImGuiTextRange
+(cffi:defcstruct TextRange
 	(b :string)
 	(e :string)
 	(empty :pointer)
 	(split :pointer))
 
-(cffi:defcstruct ImGuiTextBuffer
+(cffi:defcstruct TextBuffer
 	(Buf :pointer)
 	(EmptyString :pointer :count 1)
 	(__aref__ :pointer)
@@ -3840,7 +3851,7 @@
 	(appendf :pointer)
 	(appendfv :pointer))
 
-(cffi:defcstruct ImGuiStorage
+(cffi:defcstruct Storage
 	(Data :pointer)
 	(Clear :pointer)
 	(GetInt :pointer)
@@ -3865,13 +3876,13 @@
 	(SetAllInt :pointer)
 	(BuildSortByKey :pointer))
 
-(cffi:defcstruct ImGuiStoragePair
+(cffi:defcstruct StoragePair
 	(key :unsigned-int)
 	(val_i :int)
 	(val_f :float)
 	(val_p :pointer))
 
-(cffi:defcstruct ImGuiListClipper
+(cffi:defcstruct ListClipper
 	(DisplayStart :int)
 	(DisplayEnd :int)
 	(ItemsCount :int)
@@ -3931,23 +3942,23 @@
 	(SetCurrentChannel :pointer))
 
 (cffi:defcenum ImDrawCornerFlags_
-	(:ImDrawCornerFlags_None #.0)
-	(:ImDrawCornerFlags_TopLeft #.(cl:ash 1 0))
-	(:ImDrawCornerFlags_TopRight #.(cl:ash 1 1))
-	(:ImDrawCornerFlags_BotLeft #.(cl:ash 1 2))
-	(:ImDrawCornerFlags_BotRight #.(cl:ash 1 3))
-	(:ImDrawCornerFlags_Top #.(cl:logior (cl:ash 1 0) (cl:ash 1 1)))
-	(:ImDrawCornerFlags_Bot #.(cl:logior (cl:ash 1 2) (cl:ash 1 3)))
-	(:ImDrawCornerFlags_Left #.(cl:logior (cl:ash 1 0) (cl:ash 1 2)))
-	(:ImDrawCornerFlags_Right #.(cl:logior (cl:ash 1 1) (cl:ash 1 3)))
-	(:ImDrawCornerFlags_All #.#xF))
+	(:None #.0)
+	(:TopLeft #.(cl:ash 1 0))
+	(:TopRight #.(cl:ash 1 1))
+	(:BotLeft #.(cl:ash 1 2))
+	(:BotRight #.(cl:ash 1 3))
+	(:Top #.(cl:logior (cl:ash 1 0) (cl:ash 1 1)))
+	(:Bot #.(cl:logior (cl:ash 1 2) (cl:ash 1 3)))
+	(:Left #.(cl:logior (cl:ash 1 0) (cl:ash 1 2)))
+	(:Right #.(cl:logior (cl:ash 1 1) (cl:ash 1 3)))
+	(:All #.#xF))
 
 (cffi:defcenum ImDrawListFlags_
-	(:ImDrawListFlags_None #.0)
-	(:ImDrawListFlags_AntiAliasedLines #.(cl:ash 1 0))
-	(:ImDrawListFlags_AntiAliasedLinesUseTex #.(cl:ash 1 1))
-	(:ImDrawListFlags_AntiAliasedFill #.(cl:ash 1 2))
-	(:ImDrawListFlags_AllowVtxOffset #.(cl:ash 1 3)))
+	(:None #.0)
+	(:AntiAliasedLines #.(cl:ash 1 0))
+	(:AntiAliasedLinesUseTex #.(cl:ash 1 1))
+	(:AntiAliasedFill #.(cl:ash 1 2))
+	(:AllowVtxOffset #.(cl:ash 1 3)))
 
 (cffi:defcstruct ImDrawList
 	(CmdBuffer :pointer)
@@ -4123,10 +4134,10 @@
 	(IsPacked :pointer))
 
 (cffi:defcenum ImFontAtlasFlags_
-	(:ImFontAtlasFlags_None #.0)
-	(:ImFontAtlasFlags_NoPowerOfTwoHeight #.(cl:ash 1 0))
-	(:ImFontAtlasFlags_NoMouseCursors #.(cl:ash 1 1))
-	(:ImFontAtlasFlags_NoBakedLines #.(cl:ash 1 2)))
+	(:None #.0)
+	(:NoPowerOfTwoHeight #.(cl:ash 1 0))
+	(:NoMouseCursors #.(cl:ash 1 1))
+	(:NoBakedLines #.(cl:ash 1 2)))
 
 (cffi:defcstruct ImFontAtlas
 	(AddFont :pointer)
@@ -4231,29 +4242,29 @@
 	(SetFallbackChar :pointer)
 	(IsGlyphRangeUnused :pointer))
 
-(cffi:defctype ImGuiLayoutType :int)
+(cffi:defctype LayoutType :int)
 
-(cffi:defctype ImGuiColumnsFlags :int)
+(cffi:defctype ColumnsFlags :int)
 
-(cffi:defctype ImGuiItemFlags :int)
+(cffi:defctype ItemFlags :int)
 
-(cffi:defctype ImGuiItemStatusFlags :int)
+(cffi:defctype ItemStatusFlags :int)
 
-(cffi:defctype ImGuiNavHighlightFlags :int)
+(cffi:defctype NavHighlightFlags :int)
 
-(cffi:defctype ImGuiNavDirSourceFlags :int)
+(cffi:defctype NavDirSourceFlags :int)
 
-(cffi:defctype ImGuiNavMoveFlags :int)
+(cffi:defctype NavMoveFlags :int)
 
-(cffi:defctype ImGuiNextItemDataFlags :int)
+(cffi:defctype NextItemDataFlags :int)
 
-(cffi:defctype ImGuiNextWindowDataFlags :int)
+(cffi:defctype NextWindowDataFlags :int)
 
-(cffi:defctype ImGuiSeparatorFlags :int)
+(cffi:defctype SeparatorFlags :int)
 
-(cffi:defctype ImGuiTextFlags :int)
+(cffi:defctype TextFlags :int)
 
-(cffi:defctype ImGuiTooltipFlags :int)
+(cffi:defctype TooltipFlags :int)
 
 (cffi:defcvar ("GImGui" GImGui)
  :pointer)
@@ -4366,11 +4377,11 @@
   (fmt :string)
   &rest)
 
-(cffi:defcfun ("_wrap_ImFormatStringV" ImFormatStringV) :int
-  (buf :string)
-  (buf_size :pointer)
-  (fmt :string)
-  (args :pointer))
+;;(cffi:defcfun ("_wrap_ImFormatStringV" ImFormatStringV) :int
+;;  (buf :string)
+;;  (buf_size :pointer)
+;;  (fmt :string)
+;;  (args :pointer))
 
 (cffi:defcfun ("_wrap_ImParseFormatFindStart" ImParseFormatFindStart) :string
   (format :string))
@@ -4707,173 +4718,173 @@
 	(ClearFreeMemory :pointer)
 	(FlattenIntoSingleLayer :pointer))
 
-(cffi:defcenum ImGuiItemFlags_
-	(:ImGuiItemFlags_None #.0)
-	(:ImGuiItemFlags_NoTabStop #.(cl:ash 1 0))
-	(:ImGuiItemFlags_ButtonRepeat #.(cl:ash 1 1))
-	(:ImGuiItemFlags_Disabled #.(cl:ash 1 2))
-	(:ImGuiItemFlags_NoNav #.(cl:ash 1 3))
-	(:ImGuiItemFlags_NoNavDefaultFocus #.(cl:ash 1 4))
-	(:ImGuiItemFlags_SelectableDontClosePopup #.(cl:ash 1 5))
-	(:ImGuiItemFlags_MixedValue #.(cl:ash 1 6))
-	(:ImGuiItemFlags_ReadOnly #.(cl:ash 1 7))
-	(:ImGuiItemFlags_Default_ #.0))
+(cffi:defcenum ItemFlags_
+	(:None #.0)
+	(:NoTabStop #.(cl:ash 1 0))
+	(:ButtonRepeat #.(cl:ash 1 1))
+	(:Disabled #.(cl:ash 1 2))
+	(:NoNav #.(cl:ash 1 3))
+	(:NoNavDefaultFocus #.(cl:ash 1 4))
+	(:SelectableDontClosePopup #.(cl:ash 1 5))
+	(:MixedValue #.(cl:ash 1 6))
+	(:ReadOnly #.(cl:ash 1 7))
+	(:Default_ #.0))
 
-(cffi:defcenum ImGuiItemStatusFlags_
-	(:ImGuiItemStatusFlags_None #.0)
-	(:ImGuiItemStatusFlags_HoveredRect #.(cl:ash 1 0))
-	(:ImGuiItemStatusFlags_HasDisplayRect #.(cl:ash 1 1))
-	(:ImGuiItemStatusFlags_Edited #.(cl:ash 1 2))
-	(:ImGuiItemStatusFlags_ToggledSelection #.(cl:ash 1 3))
-	(:ImGuiItemStatusFlags_ToggledOpen #.(cl:ash 1 4))
-	(:ImGuiItemStatusFlags_HasDeactivated #.(cl:ash 1 5))
-	(:ImGuiItemStatusFlags_Deactivated #.(cl:ash 1 6)))
+(cffi:defcenum ItemStatusFlags_
+	(:None #.0)
+	(:HoveredRect #.(cl:ash 1 0))
+	(:HasDisplayRect #.(cl:ash 1 1))
+	(:Edited #.(cl:ash 1 2))
+	(:ToggledSelection #.(cl:ash 1 3))
+	(:ToggledOpen #.(cl:ash 1 4))
+	(:HasDeactivated #.(cl:ash 1 5))
+	(:Deactivated #.(cl:ash 1 6)))
 
-(cffi:defcenum ImGuiButtonFlagsPrivate_
-	(:ImGuiButtonFlags_PressedOnClick #.(cl:ash 1 4))
-	(:ImGuiButtonFlags_PressedOnClickRelease #.(cl:ash 1 5))
-	(:ImGuiButtonFlags_PressedOnClickReleaseAnywhere #.(cl:ash 1 6))
-	(:ImGuiButtonFlags_PressedOnRelease #.(cl:ash 1 7))
-	(:ImGuiButtonFlags_PressedOnDoubleClick #.(cl:ash 1 8))
-	(:ImGuiButtonFlags_PressedOnDragDropHold #.(cl:ash 1 9))
-	(:ImGuiButtonFlags_Repeat #.(cl:ash 1 10))
-	(:ImGuiButtonFlags_FlattenChildren #.(cl:ash 1 11))
-	(:ImGuiButtonFlags_AllowItemOverlap #.(cl:ash 1 12))
-	(:ImGuiButtonFlags_DontClosePopups #.(cl:ash 1 13))
-	(:ImGuiButtonFlags_Disabled #.(cl:ash 1 14))
-	(:ImGuiButtonFlags_AlignTextBaseLine #.(cl:ash 1 15))
-	(:ImGuiButtonFlags_NoKeyModifiers #.(cl:ash 1 16))
-	(:ImGuiButtonFlags_NoHoldingActiveId #.(cl:ash 1 17))
-	(:ImGuiButtonFlags_NoNavFocus #.(cl:ash 1 18))
-	(:ImGuiButtonFlags_NoHoveredOnFocus #.(cl:ash 1 19))
-	(:ImGuiButtonFlags_PressedOnMask_ #.(cl:logior (cl:ash 1 4) (cl:ash 1 5) (cl:ash 1 6) (cl:ash 1 7) (cl:ash 1 8) (cl:ash 1 9)))
-	(:ImGuiButtonFlags_PressedOnDefault_ #.(cl:ash 1 7)))
+(cffi:defcenum ButtonFlagsPrivate_
+	(:PressedOnClick #.(cl:ash 1 4))
+	(:PressedOnClickRelease #.(cl:ash 1 5))
+	(:PressedOnClickReleaseAnywhere #.(cl:ash 1 6))
+	(:PressedOnRelease #.(cl:ash 1 7))
+	(:PressedOnDoubleClick #.(cl:ash 1 8))
+	(:PressedOnDragDropHold #.(cl:ash 1 9))
+	(:Repeat #.(cl:ash 1 10))
+	(:FlattenChildren #.(cl:ash 1 11))
+	(:AllowItemOverlap #.(cl:ash 1 12))
+	(:DontClosePopups #.(cl:ash 1 13))
+	(:Disabled #.(cl:ash 1 14))
+	(:AlignTextBaseLine #.(cl:ash 1 15))
+	(:NoKeyModifiers #.(cl:ash 1 16))
+	(:NoHoldingActiveId #.(cl:ash 1 17))
+	(:NoNavFocus #.(cl:ash 1 18))
+	(:NoHoveredOnFocus #.(cl:ash 1 19))
+	(:PressedOnMask_ #.(cl:logior (cl:ash 1 4) (cl:ash 1 5) (cl:ash 1 6) (cl:ash 1 7) (cl:ash 1 8) (cl:ash 1 9)))
+	(:PressedOnDefault_ #.(cl:ash 1 7)))
 
-(cffi:defcenum ImGuiSliderFlagsPrivate_
-	(:ImGuiSliderFlags_Vertical #.(cl:ash 1 20))
-	(:ImGuiSliderFlags_ReadOnly #.(cl:ash 1 21)))
+(cffi:defcenum SliderFlagsPrivate_
+	(:Vertical #.(cl:ash 1 20))
+	(:ReadOnly #.(cl:ash 1 21)))
 
-(cffi:defcenum ImGuiSelectableFlagsPrivate_
-	(:ImGuiSelectableFlags_NoHoldingActiveID #.(cl:ash 1 20))
-	(:ImGuiSelectableFlags_SelectOnClick #.(cl:ash 1 21))
-	(:ImGuiSelectableFlags_SelectOnRelease #.(cl:ash 1 22))
-	(:ImGuiSelectableFlags_SpanAvailWidth #.(cl:ash 1 23))
-	(:ImGuiSelectableFlags_DrawHoveredWhenHeld #.(cl:ash 1 24))
-	(:ImGuiSelectableFlags_SetNavIdOnHover #.(cl:ash 1 25)))
+(cffi:defcenum SelectableFlagsPrivate_
+	(:NoHoldingActiveID #.(cl:ash 1 20))
+	(:SelectOnClick #.(cl:ash 1 21))
+	(:SelectOnRelease #.(cl:ash 1 22))
+	(:SpanAvailWidth #.(cl:ash 1 23))
+	(:DrawHoveredWhenHeld #.(cl:ash 1 24))
+	(:SetNavIdOnHover #.(cl:ash 1 25)))
 
-(cffi:defcenum ImGuiTreeNodeFlagsPrivate_
-	(:ImGuiTreeNodeFlags_ClipLabelForTrailingButton #.(cl:ash 1 20)))
+(cffi:defcenum TreeNodeFlagsPrivate_
+	(:ClipLabelForTrailingButton #.(cl:ash 1 20)))
 
-(cffi:defcenum ImGuiSeparatorFlags_
-	(:ImGuiSeparatorFlags_None #.0)
-	(:ImGuiSeparatorFlags_Horizontal #.(cl:ash 1 0))
-	(:ImGuiSeparatorFlags_Vertical #.(cl:ash 1 1))
-	(:ImGuiSeparatorFlags_SpanAllColumns #.(cl:ash 1 2)))
+(cffi:defcenum SeparatorFlags_
+	(:None #.0)
+	(:Horizontal #.(cl:ash 1 0))
+	(:Vertical #.(cl:ash 1 1))
+	(:SpanAllColumns #.(cl:ash 1 2)))
 
-(cffi:defcenum ImGuiTextFlags_
-	(:ImGuiTextFlags_None #.0)
-	(:ImGuiTextFlags_NoWidthForLargeClippedText #.(cl:ash 1 0)))
+(cffi:defcenum TextFlags_
+	(:None #.0)
+	(:NoWidthForLargeClippedText #.(cl:ash 1 0)))
 
-(cffi:defcenum ImGuiTooltipFlags_
-	(:ImGuiTooltipFlags_None #.0)
-	(:ImGuiTooltipFlags_OverridePreviousTooltip #.(cl:ash 1 0)))
+(cffi:defcenum TooltipFlags_
+	(:None #.0)
+	(:OverridePreviousTooltip #.(cl:ash 1 0)))
 
-(cffi:defcenum ImGuiLayoutType_
-	(:ImGuiLayoutType_Horizontal #.0)
-	(:ImGuiLayoutType_Vertical #.1))
+(cffi:defcenum LayoutType_
+	(:Horizontal #.0)
+	(:Vertical #.1))
 
-(cffi:defcenum ImGuiLogType
-	(:ImGuiLogType_None #.0)
-	:ImGuiLogType_TTY
-	:ImGuiLogType_File
-	:ImGuiLogType_Buffer
-	:ImGuiLogType_Clipboard)
+(cffi:defcenum LogType
+	(:None #.0)
+	:TTY
+	:File
+	:Buffer
+	:Clipboard)
 
-(cffi:defcenum ImGuiAxis
-	(:ImGuiAxis_None #.-1)
-	(:ImGuiAxis_X #.0)
-	(:ImGuiAxis_Y #.1))
+(cffi:defcenum Axis
+	(:None #.-1)
+	(:X #.0)
+	(:Y #.1))
 
-(cffi:defcenum ImGuiPlotType
-	:ImGuiPlotType_Lines
-	:ImGuiPlotType_Histogram)
+(cffi:defcenum PlotType
+	:Lines
+	:Histogram)
 
-(cffi:defcenum ImGuiInputSource
-	(:ImGuiInputSource_None #.0)
-	:ImGuiInputSource_Mouse
-	:ImGuiInputSource_Nav
-	:ImGuiInputSource_NavKeyboard
-	:ImGuiInputSource_NavGamepad
-	:ImGuiInputSource_COUNT)
+(cffi:defcenum InputSource
+	(:None #.0)
+	:Mouse
+	:Nav
+	:NavKeyboard
+	:NavGamepad
+	:COUNT)
 
-(cffi:defcenum ImGuiInputReadMode
-	:ImGuiInputReadMode_Down
-	:ImGuiInputReadMode_Pressed
-	:ImGuiInputReadMode_Released
-	:ImGuiInputReadMode_Repeat
-	:ImGuiInputReadMode_RepeatSlow
-	:ImGuiInputReadMode_RepeatFast)
+(cffi:defcenum InputReadMode
+	:Down
+	:Pressed
+	:Released
+	:Repeat
+	:RepeatSlow
+	:RepeatFast)
 
-(cffi:defcenum ImGuiNavHighlightFlags_
-	(:ImGuiNavHighlightFlags_None #.0)
-	(:ImGuiNavHighlightFlags_TypeDefault #.(cl:ash 1 0))
-	(:ImGuiNavHighlightFlags_TypeThin #.(cl:ash 1 1))
-	(:ImGuiNavHighlightFlags_AlwaysDraw #.(cl:ash 1 2))
-	(:ImGuiNavHighlightFlags_NoRounding #.(cl:ash 1 3)))
+(cffi:defcenum NavHighlightFlags_
+	(:None #.0)
+	(:TypeDefault #.(cl:ash 1 0))
+	(:TypeThin #.(cl:ash 1 1))
+	(:AlwaysDraw #.(cl:ash 1 2))
+	(:NoRounding #.(cl:ash 1 3)))
 
-(cffi:defcenum ImGuiNavDirSourceFlags_
-	(:ImGuiNavDirSourceFlags_None #.0)
-	(:ImGuiNavDirSourceFlags_Keyboard #.(cl:ash 1 0))
-	(:ImGuiNavDirSourceFlags_PadDPad #.(cl:ash 1 1))
-	(:ImGuiNavDirSourceFlags_PadLStick #.(cl:ash 1 2)))
+(cffi:defcenum NavDirSourceFlags_
+	(:None #.0)
+	(:Keyboard #.(cl:ash 1 0))
+	(:PadDPad #.(cl:ash 1 1))
+	(:PadLStick #.(cl:ash 1 2)))
 
-(cffi:defcenum ImGuiNavMoveFlags_
-	(:ImGuiNavMoveFlags_None #.0)
-	(:ImGuiNavMoveFlags_LoopX #.(cl:ash 1 0))
-	(:ImGuiNavMoveFlags_LoopY #.(cl:ash 1 1))
-	(:ImGuiNavMoveFlags_WrapX #.(cl:ash 1 2))
-	(:ImGuiNavMoveFlags_WrapY #.(cl:ash 1 3))
-	(:ImGuiNavMoveFlags_AllowCurrentNavId #.(cl:ash 1 4))
-	(:ImGuiNavMoveFlags_AlsoScoreVisibleSet #.(cl:ash 1 5))
-	(:ImGuiNavMoveFlags_ScrollToEdge #.(cl:ash 1 6)))
+(cffi:defcenum NavMoveFlags_
+	(:None #.0)
+	(:LoopX #.(cl:ash 1 0))
+	(:LoopY #.(cl:ash 1 1))
+	(:WrapX #.(cl:ash 1 2))
+	(:WrapY #.(cl:ash 1 3))
+	(:AllowCurrentNavId #.(cl:ash 1 4))
+	(:AlsoScoreVisibleSet #.(cl:ash 1 5))
+	(:ScrollToEdge #.(cl:ash 1 6)))
 
-(cffi:defcenum ImGuiNavForward
-	:ImGuiNavForward_None
-	:ImGuiNavForward_ForwardQueued
-	:ImGuiNavForward_ForwardActive)
+(cffi:defcenum NavForward
+	:None
+	:ForwardQueued
+	:ForwardActive)
 
-(cffi:defcenum ImGuiNavLayer
-	(:ImGuiNavLayer_Main #.0)
-	(:ImGuiNavLayer_Menu #.1)
-	:ImGuiNavLayer_COUNT)
+(cffi:defcenum NavLayer
+	(:Main #.0)
+	(:Menu #.1)
+	:COUNT)
 
-(cffi:defcenum ImGuiPopupPositionPolicy
-	:ImGuiPopupPositionPolicy_Default
-	:ImGuiPopupPositionPolicy_ComboBox)
+(cffi:defcenum PopupPositionPolicy
+	:Default
+	:ComboBox)
 
-(cffi:defcstruct ImGuiDataTypeTempStorage
+(cffi:defcstruct DataTypeTempStorage
 	(Data :pointer :count 8))
 
-(cffi:defcstruct ImGuiDataTypeInfo
+(cffi:defcstruct DataTypeInfo
 	(Size :pointer)
 	(PrintFmt :string)
 	(ScanFmt :string))
 
-(cffi:defcenum ImGuiDataTypePrivate_
-	(:ImGuiDataType_String #.(1+ (cffi:foreign-enum-value 'ImGuiDataType_ :ImGuiDataType_COUNT)))
-	:ImGuiDataType_Pointer
-	:ImGuiDataType_ID)
+(cffi:defcenum DataTypePrivate_
+	(:String #.(1+ (cffi:foreign-enum-value 'DataType_ :COUNT)))
+	:Pointer
+	:ID)
 
-(cffi:defcstruct ImGuiColorMod
+(cffi:defcstruct ColorMod
 	(Col :int)
 	(BackupValue ImVec4))
 
-(cffi:defcstruct ImGuiStyleMod
+(cffi:defcstruct StyleMod
 	(VarIdx :int)
 	(BackupInt :pointer :count 2)
 	(BackupFloat :pointer :count 2))
 
-(cffi:defcstruct ImGuiGroupData
+(cffi:defcstruct GroupData
 	(BackupCursorPos ImVec2)
 	(BackupCursorMaxPos ImVec2)
 	(BackupIndent ImVec1)
@@ -4884,7 +4895,7 @@
 	(BackupActiveIdPreviousFrameIsAlive :pointer)
 	(EmitItem :pointer))
 
-(cffi:defcstruct ImGuiMenuColumns
+(cffi:defcstruct MenuColumns
 	(Spacing :float)
 	(Width :float)
 	(NextWidth :float)
@@ -4894,7 +4905,7 @@
 	(DeclColumns :pointer)
 	(CalcExtraSpace :pointer))
 
-(cffi:defcstruct ImGuiInputTextState
+(cffi:defcstruct InputTextState
 	(ID :unsigned-int)
 	(CurLenW :int)
 	(CurLenA :int)
@@ -4922,7 +4933,7 @@
 	(ClearSelection :pointer)
 	(SelectAll :pointer))
 
-(cffi:defcstruct ImGuiPopupData
+(cffi:defcstruct PopupData
 	(PopupId :unsigned-int)
 	(Window :pointer)
 	(SourceWindow :pointer)
@@ -4931,7 +4942,7 @@
 	(OpenPopupPos ImVec2)
 	(OpenMousePos ImVec2))
 
-(cffi:defcstruct ImGuiNavMoveResult
+(cffi:defcstruct NavMoveResult
 	(Window :pointer)
 	(ID :unsigned-int)
 	(FocusScopeId :unsigned-int)
@@ -4941,18 +4952,18 @@
 	(RectRel ImRect)
 	(Clear :pointer))
 
-(cffi:defcenum ImGuiNextWindowDataFlags_
-	(:ImGuiNextWindowDataFlags_None #.0)
-	(:ImGuiNextWindowDataFlags_HasPos #.(cl:ash 1 0))
-	(:ImGuiNextWindowDataFlags_HasSize #.(cl:ash 1 1))
-	(:ImGuiNextWindowDataFlags_HasContentSize #.(cl:ash 1 2))
-	(:ImGuiNextWindowDataFlags_HasCollapsed #.(cl:ash 1 3))
-	(:ImGuiNextWindowDataFlags_HasSizeConstraint #.(cl:ash 1 4))
-	(:ImGuiNextWindowDataFlags_HasFocus #.(cl:ash 1 5))
-	(:ImGuiNextWindowDataFlags_HasBgAlpha #.(cl:ash 1 6))
-	(:ImGuiNextWindowDataFlags_HasScroll #.(cl:ash 1 7)))
+(cffi:defcenum NextWindowDataFlags_
+	(:None #.0)
+	(:HasPos #.(cl:ash 1 0))
+	(:HasSize #.(cl:ash 1 1))
+	(:HasContentSize #.(cl:ash 1 2))
+	(:HasCollapsed #.(cl:ash 1 3))
+	(:HasSizeConstraint #.(cl:ash 1 4))
+	(:HasFocus #.(cl:ash 1 5))
+	(:HasBgAlpha #.(cl:ash 1 6))
+	(:HasScroll #.(cl:ash 1 7)))
 
-(cffi:defcstruct ImGuiNextWindowData
+(cffi:defcstruct NextWindowData
 	(Flags :int)
 	(PosCond :int)
 	(SizeCond :int)
@@ -4970,12 +4981,12 @@
 	(MenuBarOffsetMinVal ImVec2)
 	(ClearFlags :pointer))
 
-(cffi:defcenum ImGuiNextItemDataFlags_
-	(:ImGuiNextItemDataFlags_None #.0)
-	(:ImGuiNextItemDataFlags_HasWidth #.(cl:ash 1 0))
-	(:ImGuiNextItemDataFlags_HasOpen #.(cl:ash 1 1)))
+(cffi:defcenum NextItemDataFlags_
+	(:None #.0)
+	(:HasWidth #.(cl:ash 1 0))
+	(:HasOpen #.(cl:ash 1 1)))
 
-(cffi:defcstruct ImGuiNextItemData
+(cffi:defcstruct NextItemData
 	(Flags :int)
 	(Width :float)
 	(FocusScopeId :unsigned-int)
@@ -4983,29 +4994,29 @@
 	(OpenVal :pointer)
 	(ClearFlags :pointer))
 
-(cffi:defcstruct ImGuiShrinkWidthItem
+(cffi:defcstruct ShrinkWidthItem
 	(Index :int)
 	(Width :float))
 
-(cffi:defcstruct ImGuiPtrOrIndex
+(cffi:defcstruct PtrOrIndex
 	(Ptr :pointer)
 	(Index :int))
 
-(cffi:defcenum ImGuiColumnsFlags_
-	(:ImGuiColumnsFlags_None #.0)
-	(:ImGuiColumnsFlags_NoBorder #.(cl:ash 1 0))
-	(:ImGuiColumnsFlags_NoResize #.(cl:ash 1 1))
-	(:ImGuiColumnsFlags_NoPreserveWidths #.(cl:ash 1 2))
-	(:ImGuiColumnsFlags_NoForceWithinWindow #.(cl:ash 1 3))
-	(:ImGuiColumnsFlags_GrowParentContentsSize #.(cl:ash 1 4)))
+(cffi:defcenum ColumnsFlags_
+	(:None #.0)
+	(:NoBorder #.(cl:ash 1 0))
+	(:NoResize #.(cl:ash 1 1))
+	(:NoPreserveWidths #.(cl:ash 1 2))
+	(:NoForceWithinWindow #.(cl:ash 1 3))
+	(:GrowParentContentsSize #.(cl:ash 1 4)))
 
-(cffi:defcstruct ImGuiColumnData
+(cffi:defcstruct ColumnData
 	(OffsetNorm :float)
 	(OffsetNormBeforeResize :float)
 	(Flags :int)
 	(ClipRect ImRect))
 
-(cffi:defcstruct ImGuiColumns
+(cffi:defcstruct Columns
 	(ID :unsigned-int)
 	(Flags :int)
 	(IsFirstFrame :pointer)
@@ -5025,7 +5036,7 @@
 	(Splitter ImDrawListSplitter)
 	(Clear :pointer))
 
-(cffi:defcstruct ImGuiWindowSettings
+(cffi:defcstruct WindowSettings
 	(ID :unsigned-int)
 	(Pos ImVec2ih)
 	(Size ImVec2ih)
@@ -5033,7 +5044,7 @@
 	(WantApply :pointer)
 	(GetName :pointer))
 
-(cffi:defcstruct ImGuiSettingsHandler
+(cffi:defcstruct SettingsHandler
 	(TypeName :string)
 	(TypeHash :unsigned-int)
 	(ClearAllFn :pointer)
@@ -5044,11 +5055,11 @@
 	(WriteAllFn :pointer)
 	(UserData :pointer))
 
-(cffi:defcstruct ImGuiContext
+(cffi:defcstruct Context
 	(Initialized :pointer)
 	(FontAtlasOwnedByContext :pointer)
-	(IO ImGuiIO)
-	(Style ImGuiStyle)
+	(IO IO)
+	(Style Style)
 	(Font :pointer)
 	(FontSize :float)
 	(FontBaseSize :float)
@@ -5067,7 +5078,7 @@
 	(WindowsFocusOrder :pointer)
 	(WindowsTempSortBuffer :pointer)
 	(CurrentWindowStack :pointer)
-	(WindowsById ImGuiStorage)
+	(WindowsById Storage)
 	(WindowsActiveCount :int)
 	(CurrentWindow :pointer)
 	(HoveredWindow :pointer)
@@ -5097,7 +5108,7 @@
 	(ActiveIdUsingKeyInputMask :unsigned-long-long)
 	(ActiveIdClickOffset ImVec2)
 	(ActiveIdWindow :pointer)
-	(ActiveIdSource ImGuiInputSource)
+	(ActiveIdSource InputSource)
 	(ActiveIdMouseButton :int)
 	(ActiveIdPreviousFrame :unsigned-int)
 	(ActiveIdPreviousFrameIsAlive :pointer)
@@ -5105,8 +5116,8 @@
 	(ActiveIdPreviousFrameWindow :pointer)
 	(LastActiveId :unsigned-int)
 	(LastActiveIdTimer :float)
-	(NextWindowData ImGuiNextWindowData)
-	(NextItemData ImGuiNextItemData)
+	(NextWindowData NextWindowData)
+	(NextItemData NextItemData)
 	(ColorModifiers :pointer)
 	(StyleModifiers :pointer)
 	(FontStack :pointer)
@@ -5124,10 +5135,10 @@
 	(NavJustMovedToFocusScopeId :unsigned-int)
 	(NavJustMovedToKeyMods :int)
 	(NavNextActivateId :unsigned-int)
-	(NavInputSource ImGuiInputSource)
+	(NavInputSource InputSource)
 	(NavScoringRect ImRect)
 	(NavScoringCount :int)
-	(NavLayer ImGuiNavLayer)
+	(NavLayer NavLayer)
 	(NavIdTabCounter :int)
 	(NavIdIsAlive :pointer)
 	(NavMousePosDirty :pointer)
@@ -5141,14 +5152,14 @@
 	(NavMoveFromClampedRefRect :pointer)
 	(NavMoveRequest :pointer)
 	(NavMoveRequestFlags :int)
-	(NavMoveRequestForward ImGuiNavForward)
+	(NavMoveRequestForward NavForward)
 	(NavMoveRequestKeyMods :int)
 	(NavMoveDir :int)
 	(NavMoveDirLast :int)
 	(NavMoveClipDir :int)
-	(NavMoveResultLocal ImGuiNavMoveResult)
-	(NavMoveResultLocalVisibleSet ImGuiNavMoveResult)
-	(NavMoveResultOther ImGuiNavMoveResult)
+	(NavMoveResultLocal NavMoveResult)
+	(NavMoveResultLocalVisibleSet NavMoveResult)
+	(NavMoveResultOther NavMoveResult)
 	(NavWrapRequestWindow :pointer)
 	(NavWrapRequestFlags :int)
 	(NavWindowingTarget :pointer)
@@ -5176,7 +5187,7 @@
 	(DragDropSourceFlags :int)
 	(DragDropSourceFrameCount :int)
 	(DragDropMouseButton :int)
-	(DragDropPayload ImGuiPayload)
+	(DragDropPayload Payload)
 	(DragDropTargetRect ImRect)
 	(DragDropTargetId :unsigned-int)
 	(DragDropAcceptFlags :int)
@@ -5192,7 +5203,7 @@
 	(CurrentTabBarStack :pointer)
 	(ShrinkWidthBuffer :pointer)
 	(LastValidMousePos ImVec2)
-	(InputTextState ImGuiInputTextState)
+	(InputTextState InputTextState)
 	(InputTextPasswordFont ImFont)
 	(TempInputId :unsigned-int)
 	(ColorEditOptions :int)
@@ -5213,13 +5224,13 @@
 	(PlatformImeLastPos ImVec2)
 	(SettingsLoaded :pointer)
 	(SettingsDirtyTimer :float)
-	(SettingsIniData ImGuiTextBuffer)
+	(SettingsIniData TextBuffer)
 	(SettingsHandlers :pointer)
 	(SettingsWindows :pointer)
 	(LogEnabled :pointer)
-	(LogType ImGuiLogType)
+	(LogType LogType)
 	(LogFile :pointer)
-	(LogBuffer ImGuiTextBuffer)
+	(LogBuffer TextBuffer)
 	(LogLinePosY :float)
 	(LogLineFirstItem :pointer)
 	(LogDepthRef :int)
@@ -5235,7 +5246,7 @@
 	(WantTextInputNextFrame :int)
 	(TempBuffer :pointer :count #.(1+ (* 1024 3))))
 
-(cffi:defcstruct ImGuiWindowTempData
+(cffi:defcstruct WindowTempData
 	(CursorPos ImVec2)
 	(CursorPosPrevLine ImVec2)
 	(CursorStartPos ImVec2)
@@ -5251,7 +5262,7 @@
 	(LastItemStatusFlags :int)
 	(LastItemRect ImRect)
 	(LastItemDisplayRect ImRect)
-	(NavLayerCurrent ImGuiNavLayer)
+	(NavLayerCurrent NavLayer)
 	(NavLayerCurrentMask :int)
 	(NavLayerActiveMask :int)
 	(NavLayerActiveMaskNext :int)
@@ -5260,7 +5271,7 @@
 	(NavHasScroll :pointer)
 	(MenuBarAppending :pointer)
 	(MenuBarOffset ImVec2)
-	(MenuColumns ImGuiMenuColumns)
+	(MenuColumns MenuColumns)
 	(TreeDepth :int)
 	(TreeJumpToParentOnPopMask :unsigned-int)
 	(ChildWindows :pointer)
@@ -5279,7 +5290,7 @@
 	(GroupStack :pointer)
 	(StackSizesBackup :pointer :count 6))
 
-(cffi:defcstruct ImGuiWindow
+(cffi:defcstruct Window
 	(Name :string)
 	(ID :unsigned-int)
 	(Flags :int)
@@ -5329,7 +5340,7 @@
 	(SetWindowPosVal ImVec2)
 	(SetWindowPosPivot ImVec2)
 	(IDStack :pointer)
-	(DC ImGuiWindowTempData)
+	(DC WindowTempData)
 	(OuterRectClipped ImRect)
 	(InnerRect ImRect)
 	(InnerClipRect ImRect)
@@ -5342,7 +5353,7 @@
 	(LastFrameActive :int)
 	(LastTimeActive :float)
 	(ItemWidthDefault :float)
-	(StateStorage ImGuiStorage)
+	(StateStorage Storage)
 	(ColumnsStorage :pointer)
 	(FontWindowScale :float)
 	(SettingsOffset :int)
@@ -5353,8 +5364,8 @@
 	(RootWindowForTitleBarHighlight :pointer)
 	(RootWindowForNav :pointer)
 	(NavLastChildNavWindow :pointer)
-	(NavLastIds :pointer :count #.(cffi:foreign-enum-value 'ImGuiNavLayer :ImGuiNavLayer_COUNT))
-	(NavRectRel :pointer :count #.(cffi:foreign-enum-value 'ImGuiNavLayer :ImGuiNavLayer_COUNT))
+	(NavLastIds :pointer :count #.(cffi:foreign-enum-value 'NavLayer :COUNT))
+	(NavRectRel :pointer :count #.(cffi:foreign-enum-value 'NavLayer :COUNT))
 	(MemoryCompacted :pointer)
 	(MemoryDrawListIdxCapacity :int)
 	(MemoryDrawListVtxCapacity :int)
@@ -5374,7 +5385,7 @@
 	(MenuBarHeight :pointer)
 	(MenuBarRect :pointer))
 
-(cffi:defcstruct ImGuiLastItemDataBackup
+(cffi:defcstruct LastItemDataBackup
 	(LastItemId :unsigned-int)
 	(LastItemStatusFlags :int)
 	(LastItemRect ImRect)
@@ -5382,15 +5393,15 @@
 	(Backup :pointer)
 	(Restore :pointer))
 
-(cffi:defcenum ImGuiTabBarFlagsPrivate_
-	(:ImGuiTabBarFlags_DockNode #.(cl:ash 1 20))
-	(:ImGuiTabBarFlags_IsFocused #.(cl:ash 1 21))
-	(:ImGuiTabBarFlags_SaveSettings #.(cl:ash 1 22)))
+(cffi:defcenum TabBarFlagsPrivate_
+	(:DockNode #.(cl:ash 1 20))
+	(:IsFocused #.(cl:ash 1 21))
+	(:SaveSettings #.(cl:ash 1 22)))
 
-(cffi:defcenum ImGuiTabItemFlagsPrivate_
-	(:ImGuiTabItemFlags_NoCloseButton #.(cl:ash 1 20)))
+(cffi:defcenum TabItemFlagsPrivate_
+	(:NoCloseButton #.(cl:ash 1 20)))
 
-(cffi:defcstruct ImGuiTabItem
+(cffi:defcstruct TabItem
 	(ID :unsigned-int)
 	(Flags :int)
 	(LastFrameVisible :int)
@@ -5401,7 +5412,7 @@
 	(NameOffset :short)
 	(WantClose :pointer))
 
-(cffi:defcstruct ImGuiTabBar
+(cffi:defcstruct TabBar
 	(Tabs :pointer)
 	(ID :unsigned-int)
 	(SelectedTabId :unsigned-int)
@@ -5425,7 +5436,7 @@
 	(VisibleTabWasSubmitted :pointer)
 	(LastTabItemIdx :short)
 	(FramePadding ImVec2)
-	(TabsNames ImGuiTextBuffer)
+	(TabsNames TextBuffer)
 	(GetTabOrder :pointer)
 	(GetTabName :pointer))
 
@@ -5513,10 +5524,10 @@
 (cffi:defcfun ("_wrap_GetForegroundDrawList__SWIG_1" GetForegroundDrawList) :pointer
   (window :pointer))
 
-(cffi:defcfun ("_wrap_Initialize" ImGuiInitialize) :void
+(cffi:defcfun ("_wrap_Initialize" Initialize) :void
   (context :pointer))
 
-(cffi:defcfun ("_wrap_Shutdown" ImGuiShutdown) :void
+(cffi:defcfun ("_wrap_Shutdown" Shutdown) :void
   (context :pointer))
 
 (cffi:defcfun ("_wrap_UpdateHoveredWindowAndCaptureFlags" UpdateHoveredWindowAndCaptureFlags) :void)
@@ -5686,7 +5697,7 @@
   (width_excess :float))
 
 (cffi:defcfun ("_wrap_LogBegin" LogBegin) :void
-  (type ImGuiLogType)
+  (type LogType)
   (auto_open_depth :int))
 
 (cffi:defcfun ("_wrap_LogToBuffer__SWIG_0" LogToBuffer) :void
@@ -5739,7 +5750,7 @@
   (last_dir :pointer)
   (r_outer :pointer)
   (r_avoid :pointer)
-  (policy ImGuiPopupPositionPolicy))
+  (policy PopupPositionPolicy))
 
 (cffi:defcfun ("_wrap_FindBestWindowPosForPopupEx__SWIG_1" FindBestWindowPosForPopupEx) ImVec2
   (ref_pos :pointer)
@@ -5768,22 +5779,22 @@
 
 (cffi:defcfun ("_wrap_GetNavInputAmount" GetNavInputAmount) :float
   (n :int)
-  (mode ImGuiInputReadMode))
+  (mode InputReadMode))
 
 (cffi:defcfun ("_wrap_GetNavInputAmount2d__SWIG_0" GetNavInputAmount2d) ImVec2
   (dir_sources :int)
-  (mode ImGuiInputReadMode)
+  (mode InputReadMode)
   (slow_factor :float)
   (fast_factor :float))
 
 (cffi:defcfun ("_wrap_GetNavInputAmount2d__SWIG_1" GetNavInputAmount2d) ImVec2
   (dir_sources :int)
-  (mode ImGuiInputReadMode)
+  (mode InputReadMode)
   (slow_factor :float))
 
 (cffi:defcfun ("_wrap_GetNavInputAmount2d__SWIG_2" GetNavInputAmount2d) ImVec2
   (dir_sources :int)
-  (mode ImGuiInputReadMode))
+  (mode InputReadMode))
 
 (cffi:defcfun ("_wrap_CalcTypematicRepeatAmount" CalcTypematicRepeatAmount) :int
   (t0 :float)
@@ -5840,7 +5851,7 @@
 
 (cffi:defcfun ("_wrap_IsNavInputTest" IsNavInputTest) :pointer
   (n :int)
-  (rm ImGuiInputReadMode))
+  (rm InputReadMode))
 
 (cffi:defcfun ("_wrap_GetMergedKeyModFlags" GetMergedKeyModFlags) :int)
 
@@ -6210,12 +6221,12 @@
   (size_arg ImVec2))
 
 (cffi:defcfun ("_wrap_Scrollbar" Scrollbar) :void
-  (axis ImGuiAxis))
+  (axis Axis))
 
 (cffi:defcfun ("_wrap_ScrollbarEx" ScrollbarEx) :pointer
   (bb :pointer)
   (id :unsigned-int)
-  (axis ImGuiAxis)
+  (axis Axis)
   (p_scroll_v :pointer)
   (avail_v :float)
   (contents_v :float)
@@ -6233,11 +6244,11 @@
 
 (cffi:defcfun ("_wrap_GetWindowScrollbarRect" GetWindowScrollbarRect) ImRect
   (window :pointer)
-  (axis ImGuiAxis))
+  (axis Axis))
 
 (cffi:defcfun ("_wrap_GetWindowScrollbarID" GetWindowScrollbarID) :unsigned-int
   (window :pointer)
-  (axis ImGuiAxis))
+  (axis Axis))
 
 (cffi:defcfun ("_wrap_GetWindowResizeID" GetWindowResizeID) :unsigned-int
   (window :pointer)
@@ -6283,7 +6294,7 @@
 (cffi:defcfun ("_wrap_SplitterBehavior__SWIG_0" SplitterBehavior) :pointer
   (bb :pointer)
   (id :unsigned-int)
-  (axis ImGuiAxis)
+  (axis Axis)
   (size1 :pointer)
   (size2 :pointer)
   (min_size1 :float)
@@ -6294,7 +6305,7 @@
 (cffi:defcfun ("_wrap_SplitterBehavior__SWIG_1" SplitterBehavior) :pointer
   (bb :pointer)
   (id :unsigned-int)
-  (axis ImGuiAxis)
+  (axis Axis)
   (size1 :pointer)
   (size2 :pointer)
   (min_size1 :float)
@@ -6304,7 +6315,7 @@
 (cffi:defcfun ("_wrap_SplitterBehavior__SWIG_2" SplitterBehavior) :pointer
   (bb :pointer)
   (id :unsigned-int)
-  (axis ImGuiAxis)
+  (axis Axis)
   (size1 :pointer)
   (size2 :pointer)
   (min_size1 :float)
@@ -6443,7 +6454,7 @@
   (flags :int))
 
 (cffi:defcfun ("_wrap_PlotEx" PlotEx) :int
-  (plot_type ImGuiPlotType)
+  (plot_type PlotType)
   (label :string)
   (values_getter :pointer)
   (data :pointer)
@@ -6531,45 +6542,45 @@
 
 (cffi:defctype SDL_Event :pointer)
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForOpenGL" ImGui_ImplSDL2_InitForOpenGL) :pointer
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForOpenGL" ImplSDL2_InitForOpenGL) :pointer
   (window :pointer)
   (sdl_gl_context :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForVulkan" ImGui_ImplSDL2_InitForVulkan) :pointer
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForVulkan" ImplSDL2_InitForVulkan) :pointer
   (window :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForD3D" ImGui_ImplSDL2_InitForD3D) :pointer
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForD3D" ImplSDL2_InitForD3D) :pointer
   (window :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForMetal" ImGui_ImplSDL2_InitForMetal) :pointer
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_InitForMetal" ImplSDL2_InitForMetal) :pointer
   (window :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_Shutdown" ImGui_ImplSDL2_Shutdown) :void)
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_Shutdown" ImplSDL2_Shutdown) :void)
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_NewFrame" ImGui_ImplSDL2_NewFrame) :void
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_NewFrame" ImplSDL2_NewFrame) :void
   (window :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplSDL2_ProcessEvent" ImGui_ImplSDL2_ProcessEvent) :pointer
+(cffi:defcfun ("_wrap_ImGui_ImplSDL2_ProcessEvent" ImplSDL2_ProcessEvent) :pointer
   (event :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_Init__SWIG_0" ImGui_ImplOpenGL3_Init) :pointer
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_Init__SWIG_0" ImplOpenGL3_InitVersion) :pointer
   (glsl_version :string))
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_Init__SWIG_1" ImGui_ImplOpenGL3_Init) :pointer)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_Init__SWIG_1" ImplOpenGL3_Init) :pointer)
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_Shutdown" ImGui_ImplOpenGL3_Shutdown) :void)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_Shutdown" ImplOpenGL3_Shutdown) :void)
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_NewFrame" ImGui_ImplOpenGL3_NewFrame) :void)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_NewFrame" ImplOpenGL3_NewFrame) :void)
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_RenderDrawData" ImGui_ImplOpenGL3_RenderDrawData) :void
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_RenderDrawData" ImplOpenGL3_RenderDrawData) :void
   (draw_data :pointer))
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_CreateFontsTexture" ImGui_ImplOpenGL3_CreateFontsTexture) :pointer)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_CreateFontsTexture" ImplOpenGL3_CreateFontsTexture) :pointer)
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_DestroyFontsTexture" ImGui_ImplOpenGL3_DestroyFontsTexture) :void)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_DestroyFontsTexture" ImplOpenGL3_DestroyFontsTexture) :void)
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_CreateDeviceObjects" ImGui_ImplOpenGL3_CreateDeviceObjects) :pointer)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_CreateDeviceObjects" ImplOpenGL3_CreateDeviceObjects) :pointer)
 
-(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_DestroyDeviceObjects" ImGui_ImplOpenGL3_DestroyDeviceObjects) :void)
+(cffi:defcfun ("_wrap_ImGui_ImplOpenGL3_DestroyDeviceObjects" ImplOpenGL3_DestroyDeviceObjects) :void)
 
 

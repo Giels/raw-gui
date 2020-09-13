@@ -5,8 +5,15 @@
 	 :test #'equal)
 
 (cffi:define-foreign-library sdl2
-  (:unix (:or "libSDL2.so" "lib/libSDL2.so"))
+  (:unix "libSDL2.so")
   (:windows "SDL2.dll")
-  (t (:default "libSDL2.so")))
+  (t (:default "libSDL2")))
 
 (cffi:use-foreign-library sdl2)
+
+(cffi:define-foreign-library imgui
+  (:unix "libimgui.so")
+  (:windows "imgui.dll")
+  (t (:default "libimgui")))
+
+(cffi:use-foreign-library imgui)

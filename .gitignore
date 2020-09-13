@@ -1,3 +1,4 @@
 *.o
 *.sw*
 scratch.lisp
+imgui.ini
