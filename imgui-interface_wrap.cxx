@@ -14321,21 +14321,6 @@ EXPORT void _wrap_SetScrollFromPosX__SWIG_2 (ImGuiWindow *larg1, float larg2, fl
 }
 
 
-EXPORT void _wrap_SetScrollFromPosX__SWIG_3 (ImGuiWindow *larg1, float larg2) {
-  ImGuiWindow *arg1 = (ImGuiWindow *) 0 ;
-  float arg2 ;
-  
-  arg1 = larg1;
-  arg2 = larg2;
-  try {
-    ImGui::SetScrollFromPosX(arg1,arg2);
-    
-  } catch (...) {
-    
-  }
-}
-
-
 EXPORT void _wrap_SetScrollFromPosY__SWIG_2 (ImGuiWindow *larg1, float larg2, float larg3) {
   ImGuiWindow *arg1 = (ImGuiWindow *) 0 ;
   float arg2 ;
@@ -14346,21 +14331,6 @@ EXPORT void _wrap_SetScrollFromPosY__SWIG_2 (ImGuiWindow *larg1, float larg2, fl
   arg3 = larg3;
   try {
     ImGui::SetScrollFromPosY(arg1,arg2,arg3);
-    
-  } catch (...) {
-    
-  }
-}
-
-
-EXPORT void _wrap_SetScrollFromPosY__SWIG_3 (ImGuiWindow *larg1, float larg2) {
-  ImGuiWindow *arg1 = (ImGuiWindow *) 0 ;
-  float arg2 ;
-  
-  arg1 = larg1;
-  arg2 = larg2;
-  try {
-    ImGui::SetScrollFromPosY(arg1,arg2);
     
   } catch (...) {
     
@@ -15799,7 +15769,7 @@ EXPORT void _wrap_TabBarCloseTab (ImGuiTabBar *larg1, ImGuiTabItem *larg2) {
 }
 
 
-EXPORT void _wrap_TabBarQueueChangeTabOrder (ImGuiTabBar *larg1, ImGuiTabItem *larg2, int larg3) {
+EXPORT void _wrap_TabBarQueueReorder (ImGuiTabBar *larg1, ImGuiTabItem *larg2, int larg3) {
   ImGuiTabBar *arg1 = (ImGuiTabBar *) 0 ;
   ImGuiTabItem *arg2 = (ImGuiTabItem *) 0 ;
   int arg3 ;
@@ -15808,7 +15778,7 @@ EXPORT void _wrap_TabBarQueueChangeTabOrder (ImGuiTabBar *larg1, ImGuiTabItem *l
   arg2 = larg2;
   arg3 = larg3;
   try {
-    ImGui::TabBarQueueChangeTabOrder(arg1,(ImGuiTabItem const *)arg2,arg3);
+    ImGui::TabBarQueueReorder(arg1,(ImGuiTabItem const *)arg2,arg3);
     
   } catch (...) {
     

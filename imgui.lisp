@@ -471,15 +471,9 @@
   (local_x :float)
   (center_x_ratio :float))
 
-(cffi:defcfun ("_wrap_SetScrollFromPosX__SWIG_1" SetScrollFromPosX) :void
-  (local_x :float))
-
 (cffi:defcfun ("_wrap_SetScrollFromPosY__SWIG_0" SetScrollFromPosY) :void
   (local_y :float)
   (center_y_ratio :float))
-
-(cffi:defcfun ("_wrap_SetScrollFromPosY__SWIG_1" SetScrollFromPosY) :void
-  (local_y :float))
 
 (cffi:defcfun ("_wrap_PushFont" PushFont) :void
   (font :pointer))
@@ -5918,7 +5912,7 @@
   (tab_bar :pointer)
   (tab :pointer))
 
-(cffi:defcfun ("_wrap_TabBarQueueChangeTabOrder" TabBarQueueChangeTabOrder) :void
+(cffi:defcfun ("_wrap_TabBarQueueReorder" TabBarQueueReorder) :void
   (tab_bar :pointer)
   (tab :pointer)
   (dir :int))
