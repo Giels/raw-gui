@@ -7,24 +7,33 @@
   ((wnd :initform nil :reader sdl2-window)
    (ctx :initform nil :reader gl-context)
    (imgui-ctx :initform nil :reader imgui-ctx)
+   (init-fn :initform (lambda (wnd) (values)) :initarg :init-fn :accessor init-fn)
    (render-fn :initform (lambda (wnd) (values)) :initarg :render-fn :accessor render-fn)
    (event-fn :initform (lambda (wnd evt) t) :initarg :event-fn :accessor event-fn)
    (vsync :initform t :initarg :vsync :reader vsync)
    (size :initform '(800 600) :initarg :size :reader size)
    (pos :initform '(0 0) :initarg :pos :reader pos)
+   (display-size :initform '(0 0) :reader display-size)
+   (display-rate :initform 0 :reader display-rate)
    (title :initform "raw-gui window" :initarg :title :reader title)))
 
 (defmethod open-window ((this window))
-  (with-slots (wnd ctx imgui-ctx vsync size pos title) this
-    (setf wnd
-	  (sdl2:create-window :title title
-			      :x (first pos) :y (second pos) :w (first size) :h (second size)
-			      :flags '(:shown :opengl :resizable)))
-    (sdl2:gl-set-attr sdl2-ffi:+sdl-gl-doublebuffer+ 1)
-    (sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-flags+ 0)
-    (sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-major-version+ 3)
-    (sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-minor-version+ 2)
-    (sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-forward-compatible-flag+ 1) ;; Apparently needed for OSX
+  (with-slots (wnd ctx imgui-ctx vsync size display-size display-rate pos title) this
+	(setf wnd
+		  (sdl2:create-window :title title
+							  :x (first pos) :y (second pos) :w (first size) :h (second size)
+							  :flags '(:shown :opengl :resizable)))
+	(sdl2:gl-set-attr sdl2-ffi:+sdl-gl-doublebuffer+ 1)
+	(sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-flags+ 0)
+	(sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-major-version+ 3)
+	(sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-minor-version+ 2)
+	(sdl2:gl-set-attr sdl2-ffi:+sdl-gl-context-forward-compatible-flag+ 1) ;; Apparently needed for OSX
+	(multiple-value-bind (_ w h rate)
+	  (sdl2:get-current-display-mode 0)
+	  (setf display-size (list w h))
+	  (setf display-rate rate)
+	  (when (> rate 0)
+		(setf *frametime-target* (* (/ 1.0 rate) 1000.0))))
     (setf ctx
 	  (sdl2:gl-create-context wnd))
     (sdl2:gl-make-current wnd ctx)
@@ -77,37 +86,49 @@
   (coerce (/ (get-internal-real-time) *internal-time-ms-scale*) 'single-float))
 
 (defmethod main-loop ((this window))
-  (with-slots (wnd ctx render-fn event-fn) this
+  (with-slots (wnd ctx render-fn event-fn init-fn) this
     (sdl2:in-main-thread
       (:background nil)
+	  (funcall init-fn this)
       (sdl2:with-sdl-event
-	(evt)
-	(let ((quit nil))
-	  (loop while (not quit)
-		for iter-start = (current-time-ms)
-		do
-		(loop for rc = (sdl2:next-event evt :poll) 
-		      until (= 0 rc)
-		      do
-		      (imgui::ImplSDL2_ProcessEvent (autowrap:ptr evt))
-		      (setf quit (not (sdl2:in-main-thread (:background nil) (funcall event-fn this evt)))))
-		(unless quit
-		  (imgui::ImplOpenGL3_NewFrame)
-		  (imgui::ImplSDL2_NewFrame (autowrap:ptr wnd))
-		  (imgui::NewFrame)
+		(evt)
+		(let ((quit nil))
+		  (loop while (not quit)
+				for iter-start = (current-time-ms)
+				do
+				(loop for rc = (sdl2:next-event evt :poll) 
+					  until (= 0 rc)
+					  do
+					  (let ((event-type (sdl2:get-event-type evt)))
+						(case event-type
+						  (:windowevent (let ((a (plus-c:c-ref evt sdl2-ffi:sdl-event :window :data1))
+											  (b (plus-c:c-ref evt sdl2-ffi:sdl-event :window :data2))
+											  (event (plus-c:c-ref evt sdl2-ffi:sdl-event :window :event)))
+										  (cond ((= event sdl2-ffi:+sdl-windowevent-size-changed+)
+												 (update-size this (list a b)))
+												((= event sdl2-ffi:+sdl-windowevent-moved+)
+												 (update-pos this (list a b)))
+												(t (values)))
+										  t))))
+					  (imgui::ImplSDL2_ProcessEvent (autowrap:ptr evt))
+					  (setf quit (not (sdl2:in-main-thread (:background nil) (funcall event-fn this evt)))))
+				(unless quit
+				  (imgui::ImplOpenGL3_NewFrame)
+				  (imgui::ImplSDL2_NewFrame (autowrap:ptr wnd))
+				  (imgui::NewFrame)
 
-		  (livesupport:continuable (sdl2:in-main-thread (:background nil) (funcall render-fn this)))
-		  (livesupport:update-repl-link)
+				  (livesupport:continuable (sdl2:in-main-thread (:background nil) (funcall render-fn this)))
+				  (livesupport:update-repl-link)
 
-		  (imgui::Render)
+				  (imgui::Render)
 
-		  (gl:clear :color-buffer :depth-buffer)
-		  (imgui::ImplOpenGL3_RenderDrawData (imgui::GetDrawData))
-		  (sdl2:gl-swap-window wnd)
+				  (gl:clear :color-buffer :depth-buffer)
+				  (imgui::ImplOpenGL3_RenderDrawData (imgui::GetDrawData))
+				  (sdl2:gl-swap-window wnd)
 
-		  (let ((iter-end (current-time-ms)))
-		    (when (< (- iter-end iter-start) *frametime-target*)
-		      (sdl2:delay (floor (- *frametime-target* (- iter-end iter-start)))))))))))))
+				  (let ((iter-end (current-time-ms)))
+					(when (< (- iter-end iter-start) *frametime-target*)
+					  (sdl2:delay (floor (- *frametime-target* (- iter-end iter-start)))))))))))))
 
 (defun run (&rest args)
   (sdl2:make-this-thread-main

@@ -2,7 +2,8 @@
 
 (defparameter *ui-state* (make-hash-table))
 
-(defun init ()
+(defun init (wnd)
+  (declare (ignore wnd))
   (if *ui-state*
     (clrhash *ui-state*)
     (setf *ui-state* (make-hash-table)))
@@ -39,26 +40,15 @@
 
 (defun handle-events (wnd evt)
   (let ((event-type (sdl2:get-event-type evt)))
-    (case event-type
-      (:quit nil)
-      (:keydown (let* ((sym (plus-c:c-ref evt sdl2-ffi:sdl-event :key :keysym))
-		       (scancode (sdl2:scancode-value sym))
-		       (mod-val (sdl2:mod-value sym)))
-		  (format t "~a ~a~%" mod-val scancode)
-		  t))
-      (:windowevent (let ((a (plus-c:c-ref evt sdl2-ffi:sdl-event :window :data1))
-			  (b (plus-c:c-ref evt sdl2-ffi:sdl-event :window :data2))
-			  (event (plus-c:c-ref evt sdl2-ffi:sdl-event :window :event)))
-		      (cond ((= event sdl2-ffi:+sdl-windowevent-size-changed+)
-			     (raw-gui:update-size wnd (list a b)))
-			    ((= event sdl2-ffi:+sdl-windowevent-moved+)
-			     (raw-gui:update-pos wnd (list a b)))
-			    (t (values)))
-		      t))
-      (t t))))
+	(case event-type
+	  (:quit nil)
+	  (:keydown (let* ((sym (plus-c:c-ref evt sdl2-ffi:sdl-event :key :keysym))
+					   (scancode (sdl2:scancode-value sym))
+					   (mod-val (sdl2:mod-value sym)))
+				  (format t "~a ~a~%" mod-val scancode)
+				  t))
+	  (t t))))
 
 (unwind-protect
-  (progn
-    (init)
-    (raw-gui:run :vsync t :size '(800 600) :pos '(0 0) :title "Demo" :render-fn #'ui-fn :event-fn #'handle-events))
+    (raw-gui:run :vsync t :size '(800 600) :pos '(0 0) :title "Demo" :render-fn #'ui-fn :event-fn #'handle-events :init-fn #'init)
   (cleanup))

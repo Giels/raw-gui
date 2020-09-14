@@ -18,9 +18,13 @@
     #:gl-context
     #:vsync
     #:size
+	#:display-size
+	#:display-rate
     #:pos
     #:title
-    #:fn
+    #:init-fn
+    #:render-fn
+    #:event-fn
 
     ;; Methods
     #:update-size

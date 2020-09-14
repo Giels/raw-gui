@@ -2633,7 +2633,7 @@
   (count :int)
   (id :string))
 
-(cffi:defcfun ("_wrap_Columns__SWIG_2" Columns) :void
+(cffi:defcfun ("_wrap_Columns__SWIG_2" Columns1) :void
   (count :int))
 
 (cffi:defcfun ("_wrap_Columns__SWIG_3" Columns) :void)
