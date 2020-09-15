@@ -30,6 +30,17 @@
     #:update-size
     #:update-pos
 
+	;; Macros
+	#:with-panel
+	#:with-tab-bar
+	#:with-tab
+
+	;; InputText helpers
+	#:text-user-data
+	#:str
+	#:str-len
+	#:resize-string
+
     ;; Main
     #:open-window
     #:main-loop

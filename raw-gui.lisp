@@ -142,3 +142,57 @@
 	(progn (trivial-garbage:gc)
 	       (trivial-garbage:gc)
 	       (sdl2:quit))))))
+
+(defmacro with-panel ((name &optional open-ptr flags) &body body)
+  (let ((ptr-token (gensym))
+		(flags-token (gensym)))
+	`(let ((,ptr-token (or ,open-ptr (cffi:null-pointer)))
+		   (,flags-token (if ,flags
+						   (apply #'logior
+								  (mapcar (lambda (x)
+											(cffi:foreign-enum-value 'imgui::WindowFlags_ x))
+										  ,flags))
+						   (cffi:foreign-enum-value 'imgui::WindowFlags_ :None))))
+	   (ImGui::Begin3 ,name ,ptr-token ,flags-token)
+	   ,@body
+	   (ImGui::End))))
+
+(defmacro with-tab-bar ((name &optional flags) &body body)
+  (let ((flags-token (gensym)))
+	`(let ((,flags-token (if ,flags
+						   (apply #'logior
+								  (mapcar (lambda (x)
+											(cffi:foreign-enum-value 'imgui::TabBarFlags_ x))
+										  ,flags))
+						   (cffi:foreign-enum-value 'imgui::TabBarFlags_ :None))))
+	   (when (ImGui::BeginTabBar2 ,name ,flags-token)
+		 ,@body
+		 (ImGui::EndTabBar)))))
+
+(defmacro with-tab ((name &optional open-ptr flags) &body body)
+  (let ((ptr-token (gensym))
+		(flags-token (gensym)))
+	`(let ((,ptr-token (or ,open-ptr (cffi:null-pointer)))
+		   (,flags-token (if ,flags
+						   (apply #'logior
+								  (mapcar (lambda (x)
+											(cffi:foreign-enum-value 'imgui::TabItemFlags_ x))
+										  ,flags))
+						   (cffi:foreign-enum-value 'imgui::TabItemFlags_ :None))))
+	   (when (ImGui::BeginTabItem3 ,name ,ptr-token ,flags-token)
+		 ,@body
+		 (ImGui::EndTabItem)))))
+
+(cffi:defcstruct text-user-data
+  (str :pointer)
+  (str-len :int))
+
+(cffi:defcallback resize-string :int ((data :pointer))
+				  (cffi:with-foreign-slots ((imgui::EventFlag imgui::BufTextLen imgui::Buf imgui::UserData) data imgui::InputTextCallbackData)
+										   (when (= imgui::EventFlag (cffi:foreign-enum-value 'imgui::InputTextFlags_ :CallbackResize))
+											 (cffi:with-foreign-slots ((str str-len) imgui::UserData text-user-data)
+																	  (let ((new-str (cffi:foreign-alloc :char :initial-contents 0 :count imgui::BufTextLen)))
+																		(cffi:foreign-funcall "strcpy" :pointer new-str :pointer str :pointer)
+																		(cffi:foreign-free str)
+																		(setf str new-str)
+																		(setf str-len imgui::BufTextLen))))))

@@ -6127,7 +6127,7 @@ EXPORT int _wrap_VSliderScalar__SWIG_2 (char *larg1, ImVec2 *larg2, ImGuiDataTyp
 }
 
 
-EXPORT int _wrap_InputText__SWIG_0 (char *larg1, char *larg2, size_t *larg3, ImGuiInputTextFlags larg4, ImGuiInputTextCallback larg5, void *larg6) {
+EXPORT int _wrap_InputText__SWIG_0 (char *larg1, char *larg2, size_t larg3, ImGuiInputTextFlags larg4, ImGuiInputTextCallback larg5, void *larg6) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6139,7 +6139,7 @@ EXPORT int _wrap_InputText__SWIG_0 (char *larg1, char *larg2, size_t *larg3, ImG
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   arg5 = larg5;
   arg6 = larg6;
@@ -6153,7 +6153,7 @@ EXPORT int _wrap_InputText__SWIG_0 (char *larg1, char *larg2, size_t *larg3, ImG
 }
 
 
-EXPORT int _wrap_InputText__SWIG_1 (char *larg1, char *larg2, size_t *larg3, ImGuiInputTextFlags larg4, ImGuiInputTextCallback larg5) {
+EXPORT int _wrap_InputText__SWIG_1 (char *larg1, char *larg2, size_t larg3, ImGuiInputTextFlags larg4, ImGuiInputTextCallback larg5) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6164,7 +6164,7 @@ EXPORT int _wrap_InputText__SWIG_1 (char *larg1, char *larg2, size_t *larg3, ImG
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   arg5 = larg5;
   try {
@@ -6177,7 +6177,7 @@ EXPORT int _wrap_InputText__SWIG_1 (char *larg1, char *larg2, size_t *larg3, ImG
 }
 
 
-EXPORT int _wrap_InputText__SWIG_2 (char *larg1, char *larg2, size_t *larg3, ImGuiInputTextFlags larg4) {
+EXPORT int _wrap_InputText__SWIG_2 (char *larg1, char *larg2, size_t larg3, ImGuiInputTextFlags larg4) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6187,7 +6187,7 @@ EXPORT int _wrap_InputText__SWIG_2 (char *larg1, char *larg2, size_t *larg3, ImG
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   try {
     result = (bool)ImGui::InputText((char const *)arg1,arg2,arg3,arg4);
@@ -6199,16 +6199,16 @@ EXPORT int _wrap_InputText__SWIG_2 (char *larg1, char *larg2, size_t *larg3, ImG
 }
 
 
-EXPORT int _wrap_InputText__SWIG_3 (char *larg1, char *larg2, size_t *larg3) {
+EXPORT int _wrap_InputText__SWIG_3 (char *larg1, char *larg2, size_t larg3) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
   size_t arg3 ;
   bool result;
-  
+
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   try {
     result = (bool)ImGui::InputText((char const *)arg1,arg2,arg3);
     lresult = (int)result;
@@ -6219,7 +6219,7 @@ EXPORT int _wrap_InputText__SWIG_3 (char *larg1, char *larg2, size_t *larg3) {
 }
 
 
-EXPORT int _wrap_InputTextMultiline__SWIG_0 (char *larg1, char *larg2, size_t *larg3, ImVec2 *larg4, ImGuiInputTextFlags larg5, ImGuiInputTextCallback larg6, void *larg7) {
+EXPORT int _wrap_InputTextMultiline__SWIG_0 (char *larg1, char *larg2, size_t larg3, ImVec2 *larg4, ImGuiInputTextFlags larg5, ImGuiInputTextCallback larg6, void *larg7) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6232,7 +6232,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_0 (char *larg1, char *larg2, size_t *l
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   arg5 = larg5;
   arg6 = larg6;
@@ -6247,7 +6247,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_0 (char *larg1, char *larg2, size_t *l
 }
 
 
-EXPORT int _wrap_InputTextMultiline__SWIG_1 (char *larg1, char *larg2, size_t *larg3, ImVec2 *larg4, ImGuiInputTextFlags larg5, ImGuiInputTextCallback larg6) {
+EXPORT int _wrap_InputTextMultiline__SWIG_1 (char *larg1, char *larg2, size_t larg3, ImVec2 *larg4, ImGuiInputTextFlags larg5, ImGuiInputTextCallback larg6) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6259,7 +6259,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_1 (char *larg1, char *larg2, size_t *l
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   arg5 = larg5;
   arg6 = larg6;
@@ -6273,7 +6273,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_1 (char *larg1, char *larg2, size_t *l
 }
 
 
-EXPORT int _wrap_InputTextMultiline__SWIG_2 (char *larg1, char *larg2, size_t *larg3, ImVec2 *larg4, ImGuiInputTextFlags larg5) {
+EXPORT int _wrap_InputTextMultiline__SWIG_2 (char *larg1, char *larg2, size_t larg3, ImVec2 *larg4, ImGuiInputTextFlags larg5) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6284,7 +6284,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_2 (char *larg1, char *larg2, size_t *l
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   arg5 = larg5;
   try {
@@ -6297,7 +6297,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_2 (char *larg1, char *larg2, size_t *l
 }
 
 
-EXPORT int _wrap_InputTextMultiline__SWIG_3 (char *larg1, char *larg2, size_t *larg3, ImVec2 *larg4) {
+EXPORT int _wrap_InputTextMultiline__SWIG_3 (char *larg1, char *larg2, size_t larg3, ImVec2 *larg4) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6307,7 +6307,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_3 (char *larg1, char *larg2, size_t *l
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   arg4 = larg4;
   try {
     result = (bool)ImGui::InputTextMultiline((char const *)arg1,arg2,arg3,(ImVec2 const &)*arg4);
@@ -6319,7 +6319,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_3 (char *larg1, char *larg2, size_t *l
 }
 
 
-EXPORT int _wrap_InputTextMultiline__SWIG_4 (char *larg1, char *larg2, size_t *larg3) {
+EXPORT int _wrap_InputTextMultiline__SWIG_4 (char *larg1, char *larg2, size_t larg3) {
   int lresult = (int)0 ;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6328,7 +6328,7 @@ EXPORT int _wrap_InputTextMultiline__SWIG_4 (char *larg1, char *larg2, size_t *l
   
   arg1 = larg1;
   arg2 = larg2;
-  arg3 = *larg3;
+  arg3 = larg3;
   try {
     result = (bool)ImGui::InputTextMultiline((char const *)arg1,arg2,arg3);
     lresult = (int)result;

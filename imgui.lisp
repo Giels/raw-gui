@@ -19,6 +19,7 @@
 ;; Additional modifications:
 ;; - Removed  prefixes from every function name
 ;; - For all enums, the EnumName_ prefix was removed (e.g. :ImGuiWindowFlags_NoSavedSettings becomes :NoSavedSettings)
+;; - Many return types are wrong (:pointer when it should be, e.g. :bool), this is only partially fixed.
 
 ;; XXX: SWIG generator registeres the same lisp function name for variants of the same function (e.g. template specialization or variants of the same function with differing arguments).
 ;; XXX: This is obviously wrong for our use because it ends up shadowing all but the last definition registered.
@@ -703,26 +704,26 @@
 ;;  (fmt :string)
 ;;  (args :pointer))
 
-(cffi:defcfun ("_wrap_Button__SWIG_0" Button) :pointer
+(cffi:defcfun ("_wrap_Button__SWIG_0" Button) :bool
   (label :string)
   (size :pointer))
 
 (cffi:defcfun ("_wrap_Button__SWIG_1" Button) :bool
   (label :string))
 
-(cffi:defcfun ("_wrap_SmallButton" SmallButton) :pointer
+(cffi:defcfun ("_wrap_SmallButton" SmallButton) :bool
   (label :string))
 
-(cffi:defcfun ("_wrap_InvisibleButton__SWIG_0" InvisibleButton) :pointer
+(cffi:defcfun ("_wrap_InvisibleButton__SWIG_0" InvisibleButton) :bool
   (str_id :string)
   (size :pointer)
   (flags :int))
 
-(cffi:defcfun ("_wrap_InvisibleButton__SWIG_1" InvisibleButton) :pointer
+(cffi:defcfun ("_wrap_InvisibleButton__SWIG_1" InvisibleButton) :bool
   (str_id :string)
   (size :pointer))
 
-(cffi:defcfun ("_wrap_ArrowButton" ArrowButton) :pointer
+(cffi:defcfun ("_wrap_ArrowButton" ArrowButton) :bool
   (str_id :string)
   (dir :int))
 
@@ -1710,45 +1711,45 @@
   (p_min :pointer)
   (p_max :pointer))
 
-(cffi:defcfun ("_wrap_InputText__SWIG_0" InputText) :pointer
+(cffi:defcfun ("_wrap_InputText__SWIG_0" InputTextUCB) :pointer
   (label :string)
-  (buf :string)
-  (buf_size :pointer)
+  (buf :pointer)
+  (buf_size :int)
   (flags :int)
   (callback :pointer)
   (user_data :pointer))
 
-(cffi:defcfun ("_wrap_InputText__SWIG_1" InputText) :pointer
+(cffi:defcfun ("_wrap_InputText__SWIG_1" InputTextCB) :pointer
   (label :string)
-  (buf :string)
-  (buf_size :pointer)
+  (buf :pointer)
+  (buf_size :int)
   (flags :int)
   (callback :pointer))
 
 (cffi:defcfun ("_wrap_InputText__SWIG_2" InputText) :pointer
   (label :string)
-  (buf :string)
-  (buf_size :pointer)
+  (buf :pointer)
+  (buf_size :int)
   (flags :int))
 
 (cffi:defcfun ("_wrap_InputText__SWIG_3" InputText) :pointer
   (label :string)
-  (buf :string)
-  (buf_size :pointer))
+  (buf :pointer)
+  (buf_size :int))
 
-(cffi:defcfun ("_wrap_InputTextMultiline__SWIG_0" InputTextMultiline) :pointer
+(cffi:defcfun ("_wrap_InputTextMultiline__SWIG_0" InputTextMultilineUCB) :pointer
   (label :string)
   (buf :string)
-  (buf_size :pointer)
+  (buf_size :int)
   (size :pointer)
   (flags :int)
   (callback :pointer)
   (user_data :pointer))
 
-(cffi:defcfun ("_wrap_InputTextMultiline__SWIG_1" InputTextMultiline) :pointer
+(cffi:defcfun ("_wrap_InputTextMultiline__SWIG_1" InputTextMultilineCB) :pointer
   (label :string)
   (buf :string)
-  (buf_size :pointer)
+  (buf_size :int)
   (size :pointer)
   (flags :int)
   (callback :pointer))
@@ -1756,20 +1757,20 @@
 (cffi:defcfun ("_wrap_InputTextMultiline__SWIG_2" InputTextMultiline) :pointer
   (label :string)
   (buf :string)
-  (buf_size :pointer)
+  (buf_size :int)
   (size :pointer)
   (flags :int))
 
 (cffi:defcfun ("_wrap_InputTextMultiline__SWIG_3" InputTextMultiline) :pointer
   (label :string)
   (buf :string)
-  (buf_size :pointer)
+  (buf_size :int)
   (size :pointer))
 
 (cffi:defcfun ("_wrap_InputTextMultiline__SWIG_4" InputTextMultiline) :pointer
   (label :string)
   (buf :string)
-  (buf_size :pointer))
+  (buf_size :int))
 
 (cffi:defcfun ("_wrap_InputTextWithHint__SWIG_0" InputTextWithHint) :pointer
   (label :string)
@@ -2662,25 +2663,25 @@
 
 (cffi:defcfun ("_wrap_GetColumnsCount" GetColumnsCount) :int)
 
-(cffi:defcfun ("_wrap_BeginTabBar__SWIG_0" BeginTabBar) :pointer
+(cffi:defcfun ("_wrap_BeginTabBar__SWIG_0" BeginTabBar2) :bool
   (str_id :string)
   (flags :int))
 
-(cffi:defcfun ("_wrap_BeginTabBar__SWIG_1" BeginTabBar) :pointer
+(cffi:defcfun ("_wrap_BeginTabBar__SWIG_1" BeginTabBar) :bool
   (str_id :string))
 
 (cffi:defcfun ("_wrap_EndTabBar" EndTabBar) :void)
 
-(cffi:defcfun ("_wrap_BeginTabItem__SWIG_0" BeginTabItem) :pointer
+(cffi:defcfun ("_wrap_BeginTabItem__SWIG_0" BeginTabItem3) :bool
   (label :string)
   (p_open :pointer)
   (flags :int))
 
-(cffi:defcfun ("_wrap_BeginTabItem__SWIG_1" BeginTabItem) :pointer
+(cffi:defcfun ("_wrap_BeginTabItem__SWIG_1" BeginTabItem) :bool
   (label :string)
   (p_open :pointer))
 
-(cffi:defcfun ("_wrap_BeginTabItem__SWIG_2" BeginTabItem) :pointer
+(cffi:defcfun ("_wrap_BeginTabItem__SWIG_2" BeginTabItem) :bool
   (label :string))
 
 (cffi:defcfun ("_wrap_EndTabItem" EndTabItem) :void)
